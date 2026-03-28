@@ -1,68 +1,38 @@
-import { motion } from "motion/react";
-import { ReactNode } from "react";
+import { motion, HTMLMotionProps } from 'motion/react';
+import { ReactNode } from 'react';
 
-interface MotionWrapperProps {
+interface FadeUpProps extends HTMLMotionProps<'div'> {
   children: ReactNode;
-  className?: string;
   delay?: number;
-  direction?: "up" | "down" | "left" | "right" | "none";
   duration?: number;
 }
 
-export const FadeUp = ({ children, className, delay = 0, duration = 0.8 }: MotionWrapperProps) => (
+export const FadeUp = ({ children, delay = 0, duration = 0.8, ...props }: FadeUpProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 40 }}
+    initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-100px" }}
-    transition={{ 
-      duration, 
-      delay, 
-      ease: [0.4, 0, 0.2, 1] 
-    }}
-    className={className}
+    transition={{ delay, duration, ease: [0.4, 0, 0.2, 1] }}
+    {...props}
   >
     {children}
   </motion.div>
 );
 
-export const FadeIn = ({ children, className, delay = 0, duration = 0.8 }: MotionWrapperProps) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration, delay, ease: "easeInOut" }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
-
-export const ScaleIn = ({ children, className, delay = 0, duration = 0.6 }: MotionWrapperProps) => (
-  <motion.div
-    initial={{ scale: 0.95, opacity: 0 }}
-    whileInView={{ scale: 1, opacity: 1 }}
-    viewport={{ once: true }}
-    transition={{ duration, delay, ease: [0.4, 0, 0.2, 1] }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
-
-export const StaggerContainer = ({ children, className, delay = 0 }: { children: ReactNode, className?: string, delay?: number }) => (
+export const StaggerContainer = ({ children, delay = 0, ...props }: { children: ReactNode; delay?: number } & HTMLMotionProps<'div'>) => (
   <motion.div
     initial="initial"
     whileInView="animate"
-    viewport={{ once: true }}
+    viewport={{ once: true, margin: "-100px" }}
     variants={{
       animate: {
         transition: {
-          staggerChildren: 0.15,
-          delayChildren: delay
-        }
-      }
+          staggerChildren: 0.1,
+          delayChildren: delay,
+        },
+      },
     }}
-    className={className}
+    {...props}
   >
     {children}
   </motion.div>

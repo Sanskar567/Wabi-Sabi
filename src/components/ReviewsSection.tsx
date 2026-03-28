@@ -1,22 +1,25 @@
 import { motion } from 'motion/react';
-import { FadeUp, StaggerContainer } from './ui/MotionWrappers';
+import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { Star, Quote } from 'lucide-react';
 
 const reviews = [
   {
-    name: "Prabhavi G",
-    text: "The experience was truly magical. The staff was incredibly attentive and the views of Igatpuri are breathtaking.",
-    rating: 5
+    name: "Aarav Sharma",
+    review: "The most serene experience I've ever had. The mountain views from the Royal Suite are simply breathtaking. Highly recommend for anyone looking to escape the city chaos.",
+    rating: 5,
+    initial: "A"
   },
   {
-    name: "Tina T",
-    text: "Perfect getaway from the city. The Swiss Tents are a must-try for anyone looking for a unique stay.",
-    rating: 5
+    name: "Priya Patel",
+    review: "Wabi Sabi is a true sanctuary. The attention to detail in the design and the warmth of the staff made our anniversary celebration unforgettable. We'll definitely be back!",
+    rating: 5,
+    initial: "P"
   },
   {
-    name: "Rahul S",
-    text: "Wabi Sabi Resort exceeded all expectations. The food, the pool, and the overall vibe are just perfect.",
-    rating: 5
+    name: "Rohan Gupta",
+    review: "The Swiss Tents are a must-try! It's the perfect blend of adventure and luxury. The nature walks and the infinity pool were the highlights of our stay.",
+    rating: 5,
+    initial: "R"
   }
 ];
 
@@ -27,11 +30,12 @@ export default function ReviewsSection() {
         <div className="text-center mb-16">
           <FadeUp>
             <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Testimonials</p>
-            <h2 className="text-4xl md:text-6xl font-serif">Guest Experiences</h2>
+            <h2 className="text-4xl md:text-6xl font-serif mb-6">Guest Stories</h2>
+            <div className="w-24 h-1 bg-resort-gold mx-auto" />
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {reviews.map((review, i) => (
             <motion.div
               key={i}
@@ -39,20 +43,30 @@ export default function ReviewsSection() {
                 initial: { opacity: 0, y: 30 },
                 animate: { opacity: 1, y: 0 }
               }}
-              className="bg-white p-10 rounded-2xl relative shadow-sm hover:shadow-xl transition-all duration-500"
+              className="bg-white p-12 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 relative group"
             >
-              <Quote className="absolute top-6 right-6 w-8 h-8 text-resort-gold/10" />
-              <div className="flex mb-4">
+              <div className="absolute -top-6 left-12 w-12 h-12 bg-resort-ink rounded-full flex items-center justify-center text-white shadow-lg group-hover:bg-resort-gold transition-colors duration-500">
+                <Quote className="w-5 h-5" />
+              </div>
+
+              <div className="flex space-x-1 mb-8">
                 {[...Array(review.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-resort-gold fill-resort-gold" />
+                  <Star key={i} className="w-4 h-4 fill-resort-gold text-resort-gold" />
                 ))}
               </div>
-              <p className="text-gray-500 italic mb-8 leading-relaxed">"{review.text}"</p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-resort-gold/10 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-resort-gold font-bold">{review.name[0]}</span>
+
+              <p className="text-gray-500 font-light leading-relaxed mb-10 italic">
+                "{review.review}"
+              </p>
+
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-resort-bg rounded-full flex items-center justify-center text-resort-ink font-serif font-bold">
+                  {review.initial}
                 </div>
-                <h4 className="font-serif uppercase tracking-widest text-sm">{review.name}</h4>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-widest">{review.name}</h4>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-widest">Verified Guest</p>
+                </div>
               </div>
             </motion.div>
           ))}

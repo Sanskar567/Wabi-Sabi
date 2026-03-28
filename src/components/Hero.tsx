@@ -1,227 +1,230 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
 
-const heroSlides = [
+const slides = [
   {
-    id: 1,
-    title: "Wabi Sabi Resort",
+    title: "Mountain Sanctuary",
     location: "Igatpuri, Maharashtra",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Wabi-Sabi-Resort-Igatpuri-Hero.jpg",
-    description: "Experience the serene beauty of Igatpuri at our premium resort. A perfect blend of luxury and nature."
+    image: "src/components/images/GalleryBackground_19_11zon.png",
+    desc: "Experience the harmony of nature and luxury in our mountain retreat."
   },
   {
-    id: 2,
-    title: "Luxury Swiss Tents",
-    location: "Igatpuri, Maharashtra",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Swiss-Tents-Wabi-Sabi.jpg",
-    description: "Stay in our premium Swiss AC Tents for a unique glamping experience amidst the mountains."
+    title: "Royal Suite",
+    location: "Luxury Accommodations",
+    image: "src/components/images/yama_villa_hero_2.webp",
+    desc: "Spacious and elegantly designed, offering breathtaking views."
   },
   {
-    id: 3,
-    title: "Royal Suite Living",
-    location: "Igatpuri, Maharashtra",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Luxury-Suite-Wabi-Sabi.jpg",
-    description: "Indulge in our Royal Suites, designed for ultimate comfort and elegance."
+    title: "Infinity Pool",
+    location: "Wellness & Relaxation",
+    image: "src/components/images/garden.png",
+    desc: "Dive into tranquility with our panoramic infinity pool."
   },
   {
-    id: 4,
-    title: "Yama Villa",
-    location: "Igatpuri, Maharashtra",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Yama-Villa-Wabi-Sabi.jpg",
-    description: "Our signature Yama Villa offers privacy and luxury for family celebrations and group stays."
+    title: "Swiss Tents",
+    location: "Adventure & Comfort",
+    image: "src/components/images/pool_hero.png",
+    desc: "Reconnect with nature without compromising on modern comfort."
   }
 ];
 
-export default function Hero({ startAnimation = true }: { startAnimation?: boolean }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+interface HeroProps {
+  startAnimation?: boolean;
+}
+
+export default function Hero({ startAnimation }: HeroProps) {
+  const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const controlsRef = useRef<HTMLDivElement>(null);
-
-  const { scrollY } = useScroll();
-  const bgScale = useTransform(scrollY, [0, 500], [1.1, 1.0]);
-
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
-  }, []);
-
-  const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
-  }, []);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtextRef = useRef<HTMLParagraphElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
-    const interval = setInterval(nextSlide, 5000);
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, nextSlide]);
-
-  useEffect(() => {
-    if (!startAnimation) return;
-
-    const ctx = gsap.context(() => {
+    if (startAnimation) {
       const tl = gsap.timeline();
+      
+      tl.to(titleRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power4.out"
+      }, 0.2);
 
-      // Content reveal
-      tl.fromTo(contentRef.current?.children || [], 
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, stagger: 0.2, duration: 1.2, ease: "power3.out" },
-        0.5
-      );
+      tl.to(subtextRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power4.out"
+      }, 0.4);
 
-      // Carousel reveal (cards coming from depth)
-      const cards = carouselRef.current?.querySelectorAll('.carousel-card');
-      if (cards) {
-        tl.fromTo(cards,
-          { opacity: 0, scale: 0.8, z: -200, rotateY: 30 },
-          { 
-            opacity: 1, 
-            scale: 1, 
-            z: 0, 
-            rotateY: (i) => (i === currentIndex ? 0 : 15), 
-            stagger: 0.1, 
-            duration: 1.5, 
-            ease: "expo.out" 
-          },
-          0.8
-        );
-      }
-
-      // Controls reveal
-      tl.fromTo(controlsRef.current,
-        { opacity: 0, x: -20 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" },
-        1.5
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
+      tl.to(carouselRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power4.out"
+      }, 0.6);
+    }
   }, [startAnimation]);
 
-  return (
-    <section ref={containerRef} className="relative h-screen w-full overflow-hidden bg-resort-ink">
-      {/* Background Image Layer with Zoom Animation */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ opacity: 0 }}
-          style={{ scale: bgScale }}
-          transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
-          className="absolute inset-0"
-        >
-          <img
-            src={heroSlides[currentIndex].image}
-            alt={heroSlides[currentIndex].title}
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-        </motion.div>
-      </AnimatePresence>
+  const nextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % slides.length);
+  };
 
-      {/* Content Overlay */}
-      <div ref={contentRef} className="absolute inset-0 flex flex-col justify-center px-6 md:px-24 pointer-events-none">
-        <div className="max-w-4xl">
-          <div
-            className="flex items-center text-white/80 uppercase tracking-[0.3em] text-xs md:text-sm mb-4"
-          >
-            <MapPin className="w-4 h-4 mr-2 text-resort-gold" />
-            {heroSlides[currentIndex].location}
+  const prevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  return (
+    <section className="relative h-screen min-h-[800px] w-full overflow-hidden bg-resort-ink">
+      {/* Background Image Layer */}
+      <div 
+        ref={bgRef}
+        className="absolute inset-0 z-0 transition-all duration-1000 ease-in-out scale-105"
+      >
+        <img 
+          src={slides[activeSlide].image} 
+          alt="Resort Background"
+          className="w-full h-full object-cover opacity-40"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-resort-ink/60 via-transparent to-resort-ink/80" />
+      </div>
+
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-center pt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Content */}
+          <div className="space-y-8">
+            <div className="overflow-hidden">
+              <h1 
+                ref={titleRef}
+                className="text-5xl md:text-7xl lg:text-8xl text-white font-serif leading-[1.1] opacity-0 translate-y-20"
+              >
+                Creating happy and <br />
+                <span className="italic text-resort-gold">everlasting</span> experiences
+              </h1>
+            </div>
+            
+            <div className="overflow-hidden">
+              <p 
+                ref={subtextRef}
+                className="text-gray-300 text-lg md:text-xl font-light leading-relaxed max-w-xl opacity-0 translate-y-10"
+              >
+                Escape into a serene world surrounded by mountains, mist, and lush greenery. 
+                Discover a destination where luxury meets nature and every moment becomes a memory.
+              </p>
+            </div>
+
+            <div className="flex items-center space-x-8 pt-4">
+              <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl">
+                Explore Property
+              </button>
+              <button className="flex items-center space-x-4 text-white group">
+                <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-resort-ink transition-all duration-500">
+                  <Play className="w-4 h-4 fill-current" />
+                </div>
+                <span className="uppercase tracking-widest text-[10px] font-bold">Watch Video</span>
+              </button>
+            </div>
           </div>
 
-          <h1
-            className="text-5xl md:text-9xl font-serif text-white leading-none mb-6 uppercase tracking-tight"
+          {/* 3D Curved Carousel */}
+          <div 
+            ref={carouselRef}
+            className="relative h-[400px] md:h-[500px] perspective-1000 opacity-0 translate-y-20 hidden md:flex items-center justify-center"
           >
-            {heroSlides[currentIndex].title.split(' ').map((word, i) => (
-              <span key={i} className="block">{word}</span>
-            ))}
-          </h1>
+            <div className="relative w-full h-full preserve-3d flex items-center justify-center">
+              {slides.map((slide, i) => {
+                const offset = (i - activeSlide + slides.length) % slides.length;
+                let rotateY = 0;
+                let translateZ = 0;
+                let opacity = 0;
+                let zIndex = 0;
+                let scale = 1;
 
-          <p
-            className="text-white/70 text-sm md:text-lg max-w-md font-light leading-relaxed tracking-wide"
-          >
-            {heroSlides[currentIndex].description}
-          </p>
-        </div>
-      </div>
+                if (offset === 0) {
+                  rotateY = 0;
+                  translateZ = 200;
+                  opacity = 1;
+                  zIndex = 10;
+                  scale = 1.1;
+                } else if (offset === 1 || offset === - (slides.length - 1)) {
+                  rotateY = -45;
+                  translateZ = 0;
+                  opacity = 0.5;
+                  zIndex = 5;
+                  scale = 0.8;
+                } else if (offset === slides.length - 1 || offset === -1) {
+                  rotateY = 45;
+                  translateZ = 0;
+                  opacity = 0.5;
+                  zIndex = 5;
+                  scale = 0.8;
+                }
 
-      {/* 3D Carousel Cards (Bottom Right) - Hidden on mobile for cleaner UI */}
-      <div 
-        ref={carouselRef}
-        className="hidden md:flex absolute bottom-12 right-12 w-auto justify-end items-end space-x-4 perspective-1000"
-        onMouseEnter={() => setIsAutoPlaying(false)}
-        onMouseLeave={() => setIsAutoPlaying(true)}
-      >
-        <div className="flex items-end space-x-6 preserve-3d">
-          {heroSlides.map((slide, index) => {
-            const isCenter = index === currentIndex;
-            const isNext = index === (currentIndex + 1) % heroSlides.length;
-            const isPrev = index === (currentIndex - 1 + heroSlides.length) % heroSlides.length;
+                return (
+                  <div
+                    key={i}
+                    className="absolute w-[300px] h-[450px] transition-all duration-1000 ease-out cursor-pointer"
+                    style={{
+                      transform: `rotateY(${rotateY}deg) translateZ(${translateZ}px) scale(${scale})`,
+                      opacity: opacity,
+                      zIndex: zIndex,
+                    }}
+                    onClick={() => setActiveSlide(i)}
+                  >
+                    <div className="w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                      <img 
+                        src={slide.image} 
+                        alt={slide.title}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
+                        <p className="text-resort-gold text-[10px] uppercase tracking-widest mb-2">{slide.location}</p>
+                        <h3 className="text-white text-2xl font-serif">{slide.title}</h3>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
-            // Simple logic for visibility in the mini carousel
-            if (!isCenter && !isNext && !isPrev && heroSlides.length > 3) return null;
-
-            return (
-              <motion.div
-                key={slide.id}
-                onClick={() => setCurrentIndex(index)}
-                className={cn(
-                  "carousel-card relative cursor-pointer overflow-hidden rounded-lg transition-all duration-700 pointer-events-auto",
-                  isCenter ? "w-48 h-72 md:w-64 md:h-96 z-10" : "w-32 h-48 md:w-40 md:h-60 opacity-60 hover:opacity-100 grayscale hover:grayscale-0"
-                )}
-                animate={{
-                  scale: isCenter ? 1.05 : 0.9,
-                  rotateY: isCenter ? 0 : index > currentIndex ? 15 : -15,
-                  x: isCenter ? 0 : index > currentIndex ? 20 : -20,
-                  z: isCenter ? 100 : 0
-                }}
-                transition={{ type: 'spring', damping: 20, stiffness: 100 }}
+            {/* Carousel Controls */}
+            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center space-x-6">
+              <button 
+                onClick={prevSlide}
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500"
               >
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/20" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <p className="text-[10px] uppercase tracking-widest text-white/80 mb-1">{slide.location}</p>
-                  <p className="text-sm font-serif text-white uppercase">{slide.title}</p>
-                </div>
-              </motion.div>
-            );
-          })}
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <div className="flex space-x-2">
+                {slides.map((_, i) => (
+                  <div 
+                    key={i}
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all duration-500",
+                      activeSlide === i ? "bg-resort-gold w-8" : "bg-white/20"
+                    )}
+                  />
+                ))}
+              </div>
+              <button 
+                onClick={nextSlide}
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Navigation Controls */}
-      <div ref={controlsRef} className="absolute bottom-12 left-6 md:left-24 flex items-center space-x-8 pointer-events-auto">
-        <div className="flex space-x-4">
-          <button 
-            onClick={prevSlide}
-            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-300"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={nextSlide}
-            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-300"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-        
-        {/* Slide Counter */}
-        <div className="flex items-baseline space-x-2">
-          <span className="text-2xl font-serif text-white">0{currentIndex + 1}</span>
-          <span className="text-xs text-white/40 uppercase tracking-widest">/ 0{heroSlides.length}</span>
-        </div>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-12 left-6 md:left-12 flex flex-col items-center space-y-4">
+        <div className="w-[1px] h-24 bg-gradient-to-b from-resort-gold to-transparent" />
+        <span className="text-[10px] text-resort-gold uppercase tracking-[0.4em] vertical-text">Scroll</span>
       </div>
     </section>
   );

@@ -1,32 +1,51 @@
 import { motion } from 'motion/react';
-import { FadeUp, StaggerContainer } from './ui/MotionWrappers';
-import { ArrowRight, Maximize2, Users, BedDouble } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
+import { Maximize2, Users, BedDouble, ArrowRight } from 'lucide-react';
 
 const rooms = [
   {
-    id: 1,
-    name: "Royal Suite",
-    price: "₹8,500",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Luxury-Suite-Wabi-Sabi.jpg",
+    title: "King Room",
+    price: "8,500",
+    image: "src/components/images/king2_11zon.png",
+    desc: "Spacious and elegantly designed, the King Room offers breathtaking views of the surrounding mountains, premium interiors, and a peaceful atmosphere perfect for relaxation.",
     size: "450 sq.ft",
     guests: "2 Adults",
     bed: "King Size"
   },
   {
-    id: 2,
-    name: "Swiss AC Tent",
-    price: "₹6,500",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Swiss-Tents-Wabi-Sabi.jpg",
+    title: "Royal Suite",
+    price: "12,500",
+    image: "src/components/images/royal1.png",
+    desc: "The Royal Suite is a masterpiece of luxury, featuring a private balcony, a separate living area, and panoramic views of the Igatpuri mist. Designed for those who seek the extraordinary.",
+    size: "750 sq.ft",
+    guests: "3 Adults",
+    bed: "King Size + Sofa Bed"
+  },
+  {
+    title: "Premium Suite",
+    price: "10,500",
+    image: "src/components/images/pre1_11zon.png",
+    desc: "A perfect blend of modern aesthetics and natural charm. The Premium Suite offers a cozy yet sophisticated retreat with high-end amenities and a serene garden view.",
+    size: "600 sq.ft",
+    guests: "2 Adults",
+    bed: "King Size"
+  },
+  {
+    title: "Swiss Tents",
+    price: "6,500",
+    image: "src/components/images/tents1.png",
+    desc: "Reconnect with nature in our luxury Swiss Tents. Experience the thrill of camping without compromising on comfort, featuring private decks and mountain-facing views.",
     size: "350 sq.ft",
     guests: "2 Adults",
     bed: "Queen Size"
   },
   {
-    id: 3,
-    name: "Yama Villa",
-    price: "₹25,000",
-    image: "https://wabisabiresorts.com/wp-content/uploads/2023/04/Yama-Villa-Wabi-Sabi.jpg",
-    size: "1200 sq.ft",
+    title: "Luxury Villa",
+    price: "25,000",
+    image: "src/components/images/yama3_11zon.png",
+    desc: "The ultimate private sanctuary. Our Luxury Villa features a private plunge pool, three bedrooms, and a dedicated butler service, all nestled within a lush private garden.",
+    size: "2500 sq.ft",
     guests: "6 Adults",
     bed: "3 King Size"
   }
@@ -37,62 +56,78 @@ export default function RoomsSection() {
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 space-y-6 md:space-y-0">
-          <FadeUp>
-            <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Our Accommodations</p>
-            <h2 className="text-4xl md:text-6xl font-serif">Refined Living Spaces</h2>
+          <FadeUp className="max-w-2xl">
+            <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Accommodations</p>
+            <h2 className="text-4xl md:text-6xl font-serif mb-6">Luxury Retreats</h2>
+            <p className="text-gray-500 font-light leading-relaxed">
+              Every room at Wabi Sabi is a testament to the beauty of imperfection and the tranquility of the natural world. 
+              Find your perfect sanctuary among our curated selection of suites and villas.
+            </p>
           </FadeUp>
           <FadeUp delay={0.2}>
-            <button className="px-8 py-4 border border-resort-ink/10 rounded-full text-xs uppercase tracking-widest hover:bg-resort-ink hover:text-white transition-all duration-500">
+            <button className="text-xs uppercase tracking-[0.3em] font-bold border-b border-resort-ink/20 pb-2 hover:border-resort-gold transition-colors">
               View All Rooms
             </button>
           </FadeUp>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {rooms.map((room) => (
+        <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {rooms.map((room, i) => (
             <motion.div
-              key={room.id}
+              key={i}
               variants={{
-                initial: { opacity: 0, y: 40 },
+                initial: { opacity: 0, y: 30 },
                 animate: { opacity: 1, y: 0 }
               }}
-              className="group cursor-pointer"
+              className="group flex flex-col md:flex-row bg-resort-bg rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500"
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] mb-6">
-                <motion.img
+              {/* Image */}
+              <div className="md:w-2/5 h-64 md:h-auto overflow-hidden relative">
+                <motion.img 
                   whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
-                  src={room.image}
-                  alt={room.name}
+                  transition={{ duration: 0.8 }}
+                  src={room.image} 
+                  alt={room.title}
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm">
-                  <p className="text-xs font-bold tracking-widest text-resort-ink">FROM {room.price}</p>
-                </div>
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
-                    <ArrowRight className="text-resort-ink w-6 h-6" />
-                  </div>
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm">
+                  <p className="text-xs font-bold text-resort-ink">₹{room.price} <span className="text-[10px] font-normal text-gray-400">/ Night</span></p>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="text-2xl font-serif group-hover:text-resort-gold transition-colors duration-300">{room.name}</h3>
-                <div className="flex items-center space-x-6 text-gray-400">
-                  <div className="flex items-center text-[10px] uppercase tracking-widest">
-                    <Maximize2 className="w-3 h-3 mr-2" />
-                    {room.size}
-                  </div>
-                  <div className="flex items-center text-[10px] uppercase tracking-widest">
-                    <Users className="w-3 h-3 mr-2" />
-                    {room.guests}
-                  </div>
-                  <div className="flex items-center text-[10px] uppercase tracking-widest">
-                    <BedDouble className="w-3 h-3 mr-2" />
-                    {room.bed}
+              {/* Content */}
+              <div className="md:w-3/5 p-8 md:p-10 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-2xl font-serif mb-4 group-hover:text-resort-gold transition-colors">{room.title}</h3>
+                  <p className="text-gray-400 text-sm font-light leading-relaxed mb-8">
+                    {room.desc}
+                  </p>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-8">
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <Maximize2 className="w-4 h-4 text-resort-gold" />
+                      <span className="text-[10px] uppercase tracking-widest text-gray-400">{room.size}</span>
+                    </div>
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <Users className="w-4 h-4 text-resort-gold" />
+                      <span className="text-[10px] uppercase tracking-widest text-gray-400">{room.guests}</span>
+                    </div>
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <BedDouble className="w-4 h-4 text-resort-gold" />
+                      <span className="text-[10px] uppercase tracking-widest text-gray-400">{room.bed}</span>
+                    </div>
                   </div>
                 </div>
+
+                <Link 
+                  to="/rooms"
+                  className="flex items-center space-x-4 text-xs uppercase tracking-[0.2em] font-bold text-resort-ink group/btn"
+                >
+                  <span>Explore Room</span>
+                  <div className="w-8 h-[1px] bg-resort-ink group-hover/btn:w-12 transition-all duration-500" />
+                  <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-2 transition-transform duration-500" />
+                </Link>
               </div>
             </motion.div>
           ))}
