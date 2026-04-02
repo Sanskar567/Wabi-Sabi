@@ -2,12 +2,17 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { Maximize2, Users, BedDouble, ArrowRight } from 'lucide-react';
+import kingImg from '@/src/assets/king2_11zon.png';
+import royalImg from '@/src/assets/royal1.png';
+import preImg from '@/src/assets/pre1_11zon.png';
+import tentsImg from '@/src/assets/tents1.png';
+import villaImg from '@/src/assets/yama3_11zon.png';
 
 const rooms = [
   {
     title: "King Room",
     price: "8,500",
-    image: "/images/king2_11zon.png",
+    image: kingImg,
     desc: "Spacious and elegantly designed, the King Room offers breathtaking views of the surrounding mountains, premium interiors, and a peaceful atmosphere perfect for relaxation.",
     size: "450 sq.ft",
     guests: "2 Adults",
@@ -16,7 +21,7 @@ const rooms = [
   {
     title: "Royal Suite",
     price: "12,500",
-    image: "/images/royal1.png",
+    image: royalImg,
     desc: "The Royal Suite is a masterpiece of luxury, featuring a private balcony, a separate living area, and panoramic views of the Igatpuri mist. Designed for those who seek the extraordinary.",
     size: "750 sq.ft",
     guests: "3 Adults",
@@ -25,7 +30,7 @@ const rooms = [
   {
     title: "Premium Suite",
     price: "10,500",
-    image: "/images/pre1_11zon.png",
+    image: preImg,
     desc: "A perfect blend of modern aesthetics and natural charm. The Premium Suite offers a cozy yet sophisticated retreat with high-end amenities and a serene garden view.",
     size: "600 sq.ft",
     guests: "2 Adults",
@@ -34,7 +39,7 @@ const rooms = [
   {
     title: "Swiss Tents",
     price: "6,500",
-    image: "/images/tents1.png",
+    image: tentsImg,
     desc: "Reconnect with nature in our luxury Swiss Tents. Experience the thrill of camping without compromising on comfort, featuring private decks and mountain-facing views.",
     size: "350 sq.ft",
     guests: "2 Adults",
@@ -43,7 +48,7 @@ const rooms = [
   {
     title: "Luxury Villa",
     price: "25,000",
-    image: "/images/yama3_11zon.png",
+    image: villaImg,
     desc: "The ultimate private sanctuary. Our Luxury Villa features a private plunge pool, three bedrooms, and a dedicated butler service, all nestled within a lush private garden.",
     size: "2500 sq.ft",
     guests: "6 Adults",

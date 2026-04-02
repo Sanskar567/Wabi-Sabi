@@ -10,6 +10,11 @@ import {
 import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { cn } from '@/src/lib/utils';
 import { useBooking } from '../context/BookingContext';
+import kingImg from '@/src/assets/king2_11zon.png';
+import royalImg from '@/src/assets/royal1.png';
+import preImg from '@/src/assets/pre1_11zon.png';
+import tentsImg from '@/src/assets/tents1.png';
+import villaImg from '@/src/assets/yama3_11zon.png';
 
 const facilities = [
   { icon: Car, label: "Private Parking" },
@@ -29,7 +34,7 @@ const roomsData = [
     id: 'king-room',
     title: "King Room",
     price: "8,500",
-    image: "/images/king2_11zon.png",
+    image: kingImg,
     desc: "Spacious and elegantly designed, the King Room offers breathtaking views of the surrounding mountains, premium interiors, and a peaceful atmosphere perfect for relaxation.",
     longDesc: "Our King Room is designed for the modern traveler who appreciates the finer things in life. With a spacious layout and large windows that frame the majestic Igatpuri mountains, this room offers a sanctuary of peace. The interiors feature a blend of natural textures and contemporary luxury, ensuring a stay that is both comfortable and aesthetically pleasing. Enjoy premium linens, a well-appointed bathroom, and a private seating area where you can soak in the tranquility.",
     size: "450 sq.ft",
@@ -46,7 +51,7 @@ const roomsData = [
     id: 'royal-suite',
     title: "Royal Suite",
     price: "12,500",
-    image: "/images/royal1.png",
+    image: royalImg,
     desc: "Spacious and elegantly designed, the Royal Suite offers breathtaking views of the surrounding mountains, premium interiors, and a peaceful atmosphere perfect for relaxation.",
     longDesc: "The Royal Suite is the pinnacle of luxury at Wabi Sabi Resorts. This expansive suite features a separate living area, a master bedroom with a plush king-size bed, and a private balcony that offers panoramic views of the mist-covered peaks. The decor is a curated mix of traditional craftsmanship and modern elegance, creating an atmosphere of refined comfort. Whether you're celebrating a special occasion or simply seeking the best, the Royal Suite provides an unmatched experience of luxury in nature.",
     size: "750 sq.ft",
@@ -63,7 +68,7 @@ const roomsData = [
     id: 'premium-suite',
     title: "Premium Suite",
     price: "10,500",
-    image: "/images/pre1_11zon.png",
+    image: preImg,
     desc: "A perfect blend of modern aesthetics and natural charm. The Premium Suite offers a cozy yet sophisticated retreat with high-end amenities and a serene garden view.",
     longDesc: "Our Premium Suite is designed to provide a seamless connection between the indoors and the lush natural surroundings. Featuring large glass walls and a private terrace, this suite allows you to wake up to the sight of verdant greenery and the sound of birdsong. The interiors are minimalist yet warm, using sustainable materials and soft lighting to create a calming environment. It's the ideal choice for those who want to immerse themselves in nature without sacrificing any modern comforts.",
     size: "600 sq.ft",
@@ -80,7 +85,7 @@ const roomsData = [
     id: 'swiss-tent',
     title: "Swiss Tent",
     price: "6,500",
-    image: "/images/tents1.png",
+    image: tentsImg,
     desc: "Experience nature up close with our luxury Swiss tents, combining outdoor charm with modern comfort for a unique and memorable stay.",
     longDesc: "For the adventurous soul who still appreciates luxury, our Swiss Tents offer a unique 'glamping' experience. These high-end tents are pitched in prime locations across the property, offering direct access to the natural beauty of Igatpuri. Inside, you'll find a comfortable queen-size bed, elegant furnishings, and a fully equipped private bathroom. The sound of the wind through the canvas and the proximity to the stars at night make this a truly magical way to stay at Wabi Sabi.",
     size: "350 sq.ft",
@@ -97,7 +102,7 @@ const roomsData = [
     id: 'yama-villa',
     title: "Yama Villa",
     price: "22,000",
-    image: "/images/yama3_11zon.png",
+    image: villaImg,
     desc: "The Yama Villa is our most exclusive offering, providing ultimate privacy and luxury for families or groups seeking a private sanctuary.",
     longDesc: "Named after the Sanskrit word for 'mountain peaks', the Yama Villa sits at the highest point of our resort. This two-bedroom villa features a private plunge pool, a large outdoor deck, and a spacious living area with a fireplace. The architecture is inspired by traditional mountain lodges, updated with modern luxury and floor-to-ceiling windows that offer 360-degree views. It's a place where you can truly disconnect from the world and reconnect with those who matter most.",
     size: "1200 sq.ft",

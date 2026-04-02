@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import splashImg from '@/src/assets/GalleryBackground_19_11zon.png';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -83,7 +84,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
               className="w-full h-full"
             >
               <img 
-                src="/images/GalleryBackground_19_11zon.png" 
+                src={splashImg} 
                 alt="Hero Reveal" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
