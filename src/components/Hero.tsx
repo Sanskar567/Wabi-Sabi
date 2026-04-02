@@ -3,35 +3,29 @@ import { gsap } from 'gsap';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
 
-// Import hero images
-import galleryBg from '@/src/components/images/GalleryBackground_19_11zon.png';
-import yamaVillaHero from '@/src/components/images/yama_villa_hero_2.webp';
-import gardenImg from '@/src/components/images/garden.png';
-import poolHeroImg from '@/src/components/images/pool_hero.png';
-
 const slides = [
   {
     title: "Mountain Sanctuary",
     location: "Igatpuri, Maharashtra",
-    image: galleryBg,
+    image: "/images/GalleryBackground_19_11zon.png",
     desc: "Experience the harmony of nature and luxury in our mountain retreat."
   },
   {
     title: "Royal Suite",
     location: "Luxury Accommodations",
-    image: yamaVillaHero,
+    image: "/images/yama_villa_hero_2.webp",
     desc: "Spacious and elegantly designed, offering breathtaking views."
   },
   {
     title: "Infinity Pool",
     location: "Wellness & Relaxation",
-    image: gardenImg,
+    image: "/images/garden.png",
     desc: "Dive into tranquility with our panoramic infinity pool."
   },
   {
     title: "Swiss Tents",
     location: "Adventure & Comfort",
-    image: poolHeroImg,
+    image: "/images/pool_hero.png",
     desc: "Reconnect with nature without compromising on modern comfort."
   }
 ];

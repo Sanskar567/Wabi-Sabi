@@ -109,7 +109,7 @@ export default function FloatingStrip({ startAnimation }: FloatingStripProps) {
               </span>
               <div className="flex items-center justify-center">
                 <img 
-                  src="/src/components/images/WabiSabiLogo.webp" 
+                  src="/images/WabiSabiLogo.webp" 
                   alt="Logo" 
                   className="w-6 h-6 md:w-8 md:h-8 object-contain opacity-30 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 invert brightness-200"
                   referrerPolicy="no-referrer"

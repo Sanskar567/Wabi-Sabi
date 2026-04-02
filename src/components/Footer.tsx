@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import logoImg from '@/src/components/images/WabiSabiLogo.webp';
 
 export default function Footer() {
   return (
@@ -47,7 +46,7 @@ export default function Footer() {
           <div className="space-y-8">
             <Link to="/" className="inline-block">
               <img 
-                src="/src/components/images/WabiSabiLogo.webp" 
+                src="/images/WabiSabiLogo.webp" 
                 alt="Wabi Sabi Logo"
                 className="h-12 w-auto brightness-0 invert"
                 referrerPolicy="no-referrer"

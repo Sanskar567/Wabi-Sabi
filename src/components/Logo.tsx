@@ -1,5 +1,4 @@
 import { cn } from '@/src/lib/utils';
-import logoImg from '@/src/components/images/WabiSabiLogo.webp';
 
 interface LogoProps {
   className?: string;
@@ -12,7 +11,7 @@ export default function Logo({ className, variant = 'light' }: LogoProps) {
       {/* Placeholder for the logo image provided by the user */}
       {/* User should replace this src with their actual hosted logo URL */}
       <img 
-        src={logoImg} 
+        src="/images/WabiSabiLogo.webp" 
         alt="Wabi Sabi Logo" 
         className={cn(
           "w-12 h-12 md:w-16 md:h-16 object-contain mb-1",
