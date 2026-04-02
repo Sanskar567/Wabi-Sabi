@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import splashImg from '../assets/GalleryBackground_19_11zon.png';
+import splashImg from '@/src/assets/GalleryBackground_19_11zon.png';
 
 interface SplashScreenProps {
   onComplete: () => void;
