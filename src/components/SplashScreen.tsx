@@ -1,79 +1,116 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import Logo from '@/src/components/Logo';
+import galleryBg from '@/src/components/images/GalleryBackground_19_11zon.png';
 
 interface SplashScreenProps {
   onComplete: () => void;
 }
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
-  const [isVisible, setIsVisible] = useState(true);
+  const [phase, setPhase] = useState<'entry' | 'zoom' | 'complete'>('entry');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(onComplete, 1000); // Wait for exit animation
-    }, 3000);
+    // Phase 1: Entry (Text fades in)
+    const timer1 = setTimeout(() => {
+      setPhase('zoom');
+    }, 1500);
 
-    return () => clearTimeout(timer);
+    // Phase 2: Complete
+    const timer2 = setTimeout(() => {
+      setPhase('complete');
+      setTimeout(onComplete, 500);
+    }, 5500);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, [onComplete]);
+
+  // SVG Mask as a data URI
+  // White = Opaque, Black = Transparent (Hole)
+  const maskSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='1000' height='1000' fill='white'/%3E%3Ctext x='500' y='500' text-anchor='middle' dominant-baseline='middle' font-family='serif' font-size='100' font-weight='900' letter-spacing='40' fill='black'%3EWABI SABI%3C/text%3E%3C/svg%3E")`;
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {phase !== 'complete' && (
         <motion.div
           initial={{ opacity: 1 }}
-          exit={{ 
-            opacity: 0,
-            scale: 1.1,
-            filter: "blur(20px)",
-            transition: { duration: 1, ease: [0.7, 0, 0.3, 1] }
-          }}
-          className="fixed inset-0 z-[9999] bg-resort-ink flex flex-col items-center justify-center text-white"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
         >
-          <div className="relative overflow-hidden mb-12">
+          {/* The Portal Layer: A solid background with a text-shaped hole */}
+          <motion.div
+            initial={{ scale: 1, filter: "blur(0px)" }}
+            animate={
+              phase === 'entry' 
+                ? { scale: 1, filter: "blur(0px)" } 
+                : { 
+                    scale: 120,
+                    filter: "blur(8px)",
+                    transition: { 
+                      scale: { duration: 3.5, ease: [0.7, 0, 0.3, 1] },
+                      filter: { duration: 2, delay: 0.5 }
+                    }
+                  }
+            }
+            className="absolute inset-0 z-20 bg-resort-ink pointer-events-none"
+            style={{
+              WebkitMaskImage: maskSvg,
+              maskImage: maskSvg,
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskPosition: 'center',
+              maskPosition: 'center',
+              WebkitMaskSize: 'cover',
+              maskSize: 'cover',
+            }}
+          />
+
+          {/* Background Content (Visible through the hole) */}
+          <div className="absolute inset-0 z-10 bg-black">
             <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 1, ease: [0.7, 0, 0.3, 1] }}
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={
+                phase === 'entry' 
+                  ? { scale: 1.1, opacity: 0.3 } 
+                  : { 
+                      scale: 1, 
+                      opacity: 1,
+                      transition: { duration: 3, ease: "easeOut" }
+                    }
+              }
+              className="w-full h-full"
             >
-              <Logo className="w-48 h-48 md:w-64 md:h-64 invert brightness-200" />
+              <img 
+                src={galleryBg} 
+                alt="Hero Reveal" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-resort-ink/40" />
             </motion.div>
           </div>
 
-          <div className="flex flex-col items-center space-y-4">
-            <div className="overflow-hidden">
-              <motion.p
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
-                className="text-resort-gold uppercase tracking-[0.5em] text-xs font-bold"
+          {/* Initial Text Layer (Fades out as zoom starts to reveal the hole) */}
+          <AnimatePresence>
+            {phase === 'entry' && (
+              <motion.div
+                initial={{ opacity: 0, filter: "blur(20px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(10px)", transition: { duration: 0.5 } }}
+                className="relative z-30 pointer-events-none"
               >
-                Wabi Sabi Resorts
-              </motion.p>
-            </div>
-            
-            <div className="overflow-hidden">
-              <motion.p
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.7, duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
-                className="text-white/40 text-[10px] uppercase tracking-[0.3em]"
-              >
-                Igatpuri, Maharashtra
-              </motion.p>
-            </div>
-          </div>
+                <h1 className="text-5xl md:text-8xl font-serif uppercase tracking-[0.5em] text-white/90 text-center">
+                  Wabi Sabi
+                </h1>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Progress Bar */}
-          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-white/10">
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 2.5, ease: "easeInOut" }}
-              className="h-full bg-resort-gold origin-left"
-            />
-          </div>
+          {/* Subtle Grain Overlay */}
+          <div className="absolute inset-0 z-40 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150" />
         </motion.div>
       )}
     </AnimatePresence>

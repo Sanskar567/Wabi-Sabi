@@ -3,11 +3,18 @@ import { Link } from 'react-router-dom';
 import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { Maximize2, Users, BedDouble, ArrowRight } from 'lucide-react';
 
+// Import room images
+import kingRoomImg from '@/src/components/images/king2_11zon.png';
+import royalSuiteImg from '@/src/components/images/royal1.png';
+import premiumSuiteImg from '@/src/components/images/pre1_11zon.png';
+import swissTentImg from '@/src/components/images/tents1.png';
+import yamaVillaImg from '@/src/components/images/yama3_11zon.png';
+
 const rooms = [
   {
     title: "King Room",
     price: "8,500",
-    image: "src/components/images/king2_11zon.png",
+    image: kingRoomImg,
     desc: "Spacious and elegantly designed, the King Room offers breathtaking views of the surrounding mountains, premium interiors, and a peaceful atmosphere perfect for relaxation.",
     size: "450 sq.ft",
     guests: "2 Adults",
@@ -16,7 +23,7 @@ const rooms = [
   {
     title: "Royal Suite",
     price: "12,500",
-    image: "src/components/images/royal1.png",
+    image: royalSuiteImg,
     desc: "The Royal Suite is a masterpiece of luxury, featuring a private balcony, a separate living area, and panoramic views of the Igatpuri mist. Designed for those who seek the extraordinary.",
     size: "750 sq.ft",
     guests: "3 Adults",
@@ -25,7 +32,7 @@ const rooms = [
   {
     title: "Premium Suite",
     price: "10,500",
-    image: "src/components/images/pre1_11zon.png",
+    image: premiumSuiteImg,
     desc: "A perfect blend of modern aesthetics and natural charm. The Premium Suite offers a cozy yet sophisticated retreat with high-end amenities and a serene garden view.",
     size: "600 sq.ft",
     guests: "2 Adults",
@@ -34,7 +41,7 @@ const rooms = [
   {
     title: "Swiss Tents",
     price: "6,500",
-    image: "src/components/images/tents1.png",
+    image: swissTentImg,
     desc: "Reconnect with nature in our luxury Swiss Tents. Experience the thrill of camping without compromising on comfort, featuring private decks and mountain-facing views.",
     size: "350 sq.ft",
     guests: "2 Adults",
@@ -43,7 +50,7 @@ const rooms = [
   {
     title: "Luxury Villa",
     price: "25,000",
-    image: "src/components/images/yama3_11zon.png",
+    image: yamaVillaImg,
     desc: "The ultimate private sanctuary. Our Luxury Villa features a private plunge pool, three bedrooms, and a dedicated butler service, all nestled within a lush private garden.",
     size: "2500 sq.ft",
     guests: "6 Adults",

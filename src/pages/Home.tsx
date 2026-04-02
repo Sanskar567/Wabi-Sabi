@@ -6,12 +6,13 @@ import FloatingStrip from '@/src/components/FloatingStrip';
 import RoomsSection from '@/src/components/RoomsSection';
 import EventsSection from '@/src/components/EventsSection';
 import StatsSection from '@/src/components/StatsSection';
-import ReviewsSection from '@/src/components/ReviewsSection';
 import ActivitiesSection from '@/src/components/ActivitiesSection';
 import SplashScreen from '@/src/components/SplashScreen';
+import Testimonials from '@/src/components/ui/twitter-testimonial-cards';
 import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
-import { motion } from 'motion/react';
-import { Wind, Sun, Waves, Coffee } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Wind, Sun, Waves, Coffee, MapPin, Play, X, Navigation } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
 
 const experiences = [
   { icon: Wind, title: "Pure Air", desc: "Breathe in the freshest mountain breeze." },
@@ -20,21 +21,80 @@ const experiences = [
   { icon: Coffee, title: "Morning Bliss", desc: "Start your day with artisan perfection." },
 ];
 
+const attractions = [
+  {
+    title: "Igatpuri Hills",
+    desc: "Majestic mountain peaks offering breathtaking views and trekking trails",
+    distance: "5 km from resort",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "Bhatsa River Valley",
+    desc: "A serene valley with panoramic views of the river and surrounding hills",
+    distance: "12 km from resort",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "Tringalwadi Fort",
+    desc: "Historic fort located at an elevation of 3,000 feet with a small cave at the base",
+    distance: "15 km from resort",
+    image: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "Ashoka Waterfall",
+    desc: "A beautiful seasonal waterfall surrounded by dense forest and rock formations",
+    distance: "8 km from resort",
+    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    title: "Camel Valley",
+    desc: "Deep valley offering stunning views of the waterfalls and the river below",
+    distance: "10 km from resort",
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800"
+  }
+];
+
+const partners = [
+  { name: "Goibibo", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Goibibo_Logo.svg/1200px-Goibibo_Logo.svg.png" },
+  { name: "MakeMyTrip", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/MakeMyTrip_Logo.svg/1200px-MakeMyTrip_Logo.svg.png" },
+  { name: "Trivago", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Trivago_logo.svg/1200px-Trivago_logo.svg.png" },
+  { name: "TripAdvisor", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/TripAdvisor_Logo.svg/1200px-TripAdvisor_Logo.svg.png" },
+  { name: "Booking.com", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/1200px-Booking.com_logo.svg.png" },
+];
+
+const featuredVideos = [
+  {
+    title: "Weekend Getaway in Nashik | Wabi Sabi Resort",
+    thumbnail: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800",
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Placeholder
+  },
+  {
+    title: "Full Resort Tour – Igatpuri",
+    thumbnail: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800",
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    title: "Anniversary Celebration at Wabi Sabi",
+    thumbnail: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800",
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    title: "Luxury Stay Near Mumbai",
+    thumbnail: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800",
+    url: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+];
+
 export default function Home() {
   const [showSplash, setShowSplash] = useState(false);
   const [startHeroAnim, setStartHeroAnim] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
   useEffect(() => {
-    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
-    if (!hasSeenSplash) {
-      setShowSplash(true);
-    } else {
-      setStartHeroAnim(true);
-    }
+    setShowSplash(true);
   }, []);
 
   const handleSplashComplete = () => {
-    sessionStorage.setItem('hasSeenSplash', 'true');
     setShowSplash(false);
     setStartHeroAnim(true);
   };
@@ -44,7 +104,7 @@ export default function Home() {
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       <Hero startAnimation={startHeroAnim} />
       <BookingBar startAnimation={startHeroAnim} />
-      <FloatingStrip />
+      <FloatingStrip startAnimation={startHeroAnim} />
       
       {/* Experience Section */}
       <section className="py-24 bg-resort-bg">
@@ -130,10 +190,222 @@ export default function Home() {
       </section>
 
       <RoomsSection />
+
+      {/* Nearby Attractions Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <FadeUp>
+              <h2 className="text-4xl md:text-6xl font-serif mb-6 text-resort-ink">Nearby Attractions</h2>
+              <p className="text-gray-500 font-light max-w-2xl mx-auto">
+                Explore the rich history and natural beauty surrounding Wabi Sabi Resort
+              </p>
+            </FadeUp>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {attractions.map((attr, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.8 }}
+                whileHover={{ y: -8 }}
+                className="flex flex-col sm:flex-row gap-8 items-center group"
+              >
+                <div className="w-full sm:w-64 h-64 rounded-3xl overflow-hidden shadow-lg shrink-0">
+                  <motion.img 
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.8 }}
+                    src={attr.image} 
+                    alt={attr.title} 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div className="flex items-center gap-3 text-resort-ink">
+                    <MapPin className="w-5 h-5 text-resort-gold" />
+                    <h3 className="text-2xl font-serif">{attr.title}</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                    <Navigation className="w-4 h-4" />
+                    <span>{attr.distance}</span>
+                  </div>
+                  <p className="text-gray-500 font-light leading-relaxed">
+                    {attr.desc}
+                  </p>
+                  <button className="text-resort-gold text-xs font-bold uppercase tracking-widest border-b border-transparent hover:border-resort-gold transition-all pb-1">
+                    Learn More →
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-24 bg-resort-bg overflow-hidden border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <FadeUp>
+            <h2 className="text-3xl font-serif text-center text-resort-ink">Our Partners</h2>
+          </FadeUp>
+        </div>
+        
+        <div className="relative flex overflow-x-hidden group">
+          <div className="flex animate-marquee whitespace-nowrap py-12 group-hover:[animation-play-state:paused]">
+            {[...partners, ...partners].map((partner, i) => (
+              <div key={i} className="mx-12 flex items-center justify-center grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110">
+                <img 
+                  src={partner.logo} 
+                  alt={partner.name} 
+                  className="h-12 w-auto object-contain"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Videos Section */}
+      <section className="py-32 bg-resort-ink text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div className="lg:col-span-5 space-y-8">
+              <FadeUp>
+                <p className="text-resort-gold uppercase tracking-[0.4em] text-[10px] font-bold mb-4">Cinematic Stories</p>
+                <h2 className="text-5xl md:text-7xl font-serif leading-[1.1]">The Wabi Sabi Experience</h2>
+                <p className="text-white/40 font-light text-lg leading-relaxed max-w-md">
+                  Watch our curated collection of visual narratives that capture the essence of tranquility and mountain luxury.
+                </p>
+              </FadeUp>
+              
+              <div className="flex items-center space-x-6 pt-8">
+                <div className="flex -space-x-4">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-12 h-12 rounded-full border-2 border-resort-ink bg-gray-800 overflow-hidden shadow-xl">
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i+10}`} alt="User" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs uppercase tracking-widest text-white/60 font-bold">10k+ Views this month</p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7 relative">
+              <div className="grid grid-cols-2 gap-6">
+                {featuredVideos.map((video, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    className={cn(
+                      "relative aspect-[4/5] rounded-[2rem] overflow-hidden cursor-pointer group shadow-2xl",
+                      i % 2 === 1 ? "mt-12" : "-mt-12"
+                    )}
+                    onClick={() => setActiveVideo(video.url)}
+                  >
+                    <motion.img 
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 1.2 }}
+                      src={video.thumbnail} 
+                      alt={video.title} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-700" />
+                    
+                    <div className="absolute inset-0 flex flex-col justify-end p-8">
+                      <div className="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                        <p className="text-resort-gold text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Watch Film</p>
+                        <h4 className="text-xl font-serif leading-tight">{video.title}</h4>
+                      </div>
+                      
+                      <motion.div 
+                        whileHover={{ scale: 1.1 }}
+                        className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 self-end"
+                      >
+                        <Play className="w-5 h-5 text-white fill-white" />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <EventsSection />
       <StatsSection />
       <ActivitiesSection />
-      <ReviewsSection />
+      {/* Reviews Section */}
+      <section className="py-32 bg-resort-bg overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="space-y-8">
+              <FadeUp>
+                <p className="text-resort-gold uppercase tracking-[0.4em] text-[10px] font-bold mb-4">Guest Voices</p>
+                <h2 className="text-5xl md:text-7xl font-serif leading-[1.1]">Whispers of <br /> Satisfaction</h2>
+                <p className="text-gray-500 font-light text-lg leading-relaxed max-w-md">
+                  Discover why our guests find solace in the mountains. Real stories from real travelers who found their peace at Wabi Sabi.
+                </p>
+              </FadeUp>
+              
+              <div className="pt-8">
+                <div className="flex items-center space-x-1 mb-4">
+                  {[1,2,3,4,5].map(i => (
+                    <Sun key={i} className="w-5 h-5 text-resort-gold fill-resort-gold" />
+                  ))}
+                </div>
+                <p className="text-resort-ink font-serif text-2xl">4.9 / 5.0 Rating</p>
+                <p className="text-gray-400 text-sm tracking-widest uppercase mt-2">Based on 2,500+ reviews</p>
+              </div>
+            </div>
+
+            <div className="relative py-20">
+              <Testimonials />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {activeVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-5xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl"
+            >
+              <button 
+                onClick={() => setActiveVideo(null)}
+                className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-all"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <iframe
+                src={activeVideo}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Gallery Section */}
       <section className="py-24 bg-white">

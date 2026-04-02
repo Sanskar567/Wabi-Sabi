@@ -10,9 +10,36 @@
   --color-resort-ink: #1A1A1A;
   --color-resort-gold: #C5A059;
   --color-resort-gold-light: #D4B982;
+
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+  
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #C5A059, #E6C98B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    @apply rounded-2xl shadow-lg;
+  }
 }
 
 @layer base {
+  * {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
   body {
     @apply bg-resort-bg text-resort-ink font-sans antialiased;
   }
@@ -49,21 +76,25 @@
 
 /* Datepicker Customization */
 .react-datepicker {
-  @apply font-sans border-none shadow-2xl rounded-xl overflow-hidden !important;
+  @apply !font-sans !border-none !shadow-2xl !rounded-xl !overflow-hidden;
 }
 
 .react-datepicker__header {
-  @apply bg-resort-ink border-none pt-4 !important;
+  @apply !bg-resort-ink !border-none !pt-4;
 }
 
 .react-datepicker__current-month, .react-datepicker__day-name {
-  @apply text-white !important;
+  @apply !text-white;
 }
 
 .react-datepicker__day--selected, .react-datepicker__day--keyboard-selected {
-  @apply bg-resort-gold text-white rounded-full !important;
+  @apply !bg-resort-gold !text-white !rounded-full;
+}
+
+.react-datepicker__day {
+  @apply transition-all duration-200;
 }
 
 .react-datepicker__day:hover {
-  @apply bg-resort-gold/20 rounded-full !important;
+  @apply !bg-resort-gold/20 !rounded-full;
 }

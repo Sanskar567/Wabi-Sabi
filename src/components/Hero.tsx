@@ -1,31 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
+
+// Import hero images
+import galleryBg from '@/src/components/images/GalleryBackground_19_11zon.png';
+import yamaVillaHero from '@/src/components/images/yama_villa_hero_2.webp';
+import gardenImg from '@/src/components/images/garden.png';
+import poolHeroImg from '@/src/components/images/pool_hero.png';
 
 const slides = [
   {
     title: "Mountain Sanctuary",
     location: "Igatpuri, Maharashtra",
-    image: "src/components/images/GalleryBackground_19_11zon.png",
+    image: galleryBg,
     desc: "Experience the harmony of nature and luxury in our mountain retreat."
   },
   {
     title: "Royal Suite",
     location: "Luxury Accommodations",
-    image: "src/components/images/yama_villa_hero_2.webp",
+    image: yamaVillaHero,
     desc: "Spacious and elegantly designed, offering breathtaking views."
   },
   {
     title: "Infinity Pool",
     location: "Wellness & Relaxation",
-    image: "src/components/images/garden.png",
+    image: gardenImg,
     desc: "Dive into tranquility with our panoramic infinity pool."
   },
   {
     title: "Swiss Tents",
     location: "Adventure & Comfort",
-    image: "src/components/images/pool_hero.png",
+    image: poolHeroImg,
     desc: "Reconnect with nature without compromising on modern comfort."
   }
 ];
@@ -68,13 +74,24 @@ export default function Hero({ startAnimation }: HeroProps) {
     }
   }, [startAnimation]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setActiveSlide((prev) => (prev + 1) % slides.length);
-  };
+  }, []);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, []);
+
+  // Auto-play timer (3 second gap)
+  useEffect(() => {
+    if (!startAnimation) return;
+    
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [startAnimation, nextSlide]);
 
   return (
     <section className="relative h-screen min-h-[800px] w-full overflow-hidden bg-resort-ink">
@@ -106,15 +123,7 @@ export default function Hero({ startAnimation }: HeroProps) {
               </h1>
             </div>
             
-            <div className="overflow-hidden">
-              <p 
-                ref={subtextRef}
-                className="text-gray-300 text-lg md:text-xl font-light leading-relaxed max-w-xl opacity-0 translate-y-10"
-              >
-                Escape into a serene world surrounded by mountains, mist, and lush greenery. 
-                Discover a destination where luxury meets nature and every moment becomes a memory.
-              </p>
-            </div>
+          
 
             <div className="flex items-center space-x-8 pt-4">
               <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl">
@@ -221,11 +230,7 @@ export default function Hero({ startAnimation }: HeroProps) {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-12 left-6 md:left-12 flex flex-col items-center space-y-4">
-        <div className="w-[1px] h-24 bg-gradient-to-b from-resort-gold to-transparent" />
-        <span className="text-[10px] text-resort-gold uppercase tracking-[0.4em] vertical-text">Scroll</span>
-      </div>
+      
     </section>
   );
 }

@@ -1,16 +1,53 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import logoImg from '@/src/components/images/WabiSabiLogo.webp';
 
 export default function Footer() {
   return (
     <footer className="bg-resort-ink text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
+        {/* Newsletter and Hours Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24 items-center">
+          <div className="space-y-6">
+            <h3 className="text-3xl font-serif">Subscribe to Our Newsletter</h3>
+            <p className="text-gray-400 font-light">Get exclusive offers and updates about our resort</p>
+            <form className="flex flex-col sm:flex-row gap-4 max-w-md">
+              <input 
+                type="email" 
+                placeholder="Enter your email"
+                className="flex-1 bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-sm focus:outline-none focus:border-resort-gold transition-colors"
+              />
+              <button className="bg-white text-resort-ink px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-resort-gold hover:text-white transition-all duration-500">
+                Subscribe
+              </button>
+            </form>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm">
+            <h4 className="font-serif text-xl mb-6">Hours of Operation</h4>
+            <ul className="space-y-4 text-gray-400 font-light text-sm">
+              <li className="flex justify-between">
+                <span>Monday - Sunday</span>
+                <span className="text-white">24/7</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Check-in</span>
+                <span className="text-white">2:00 PM</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Check-out</span>
+                <span className="text-white">12:00 PM</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           {/* Brand */}
           <div className="space-y-8">
             <Link to="/" className="inline-block">
               <img 
-                src="https://wabisabiresorts.com/wp-content/uploads/2023/04/Wabi-Sabi-Logo.png" 
+                src="/src/components/images/WabiSabiLogo.webp" 
                 alt="Wabi Sabi Logo"
                 className="h-12 w-auto brightness-0 invert"
                 referrerPolicy="no-referrer"

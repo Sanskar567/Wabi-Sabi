@@ -53,7 +53,7 @@ export default function BookingBar({ startAnimation }: BookingBarProps) {
   return (
     <div 
       ref={barRef}
-      className="relative z-20 -mt-10 max-w-6xl mx-auto px-6 opacity-0"
+      className="relative z-30 mt-12 max-w-6xl mx-auto px-6 opacity-0"
     >
       <div className="bg-white shadow-2xl rounded-xl p-2 md:p-4 flex flex-col md:flex-row items-stretch md:items-center space-y-4 md:space-y-0 md:space-x-2">
         

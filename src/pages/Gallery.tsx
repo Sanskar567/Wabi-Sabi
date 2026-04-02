@@ -1,97 +1,146 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { X, Maximize2 } from 'lucide-react';
+import { 
+  GridBody,
+  DraggableContainer,
+  GridItem, 
+} from "@/src/components/ui/infinite-drag-scroll";
 
 const galleryImages = [
-  { url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200", category: "Resort" },
-  { url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=1200", category: "Rooms" },
-  { url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=1200", category: "Dining" },
-  { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200", category: "Nature" },
-  { url: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=1200", category: "Resort" },
-  { url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200", category: "Events" },
-  { url: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200", category: "Rooms" },
-  { url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200", category: "Dining" },
-  { url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1200", category: "Resort" },
-  { url: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=1200", category: "Rooms" },
-  { url: "https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0b?auto=format&fit=crop&q=80&w=1200", category: "Dining" },
-  { url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1200", category: "Nature" }
+  { 
+    id: 1, 
+    url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200", 
+    title: "Royal Suite", 
+    category: "Accommodations"
+  },
+  { 
+    id: 2, 
+    url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=1200", 
+    title: "Infinity Pool", 
+    category: "Wellness"
+  },
+  { 
+    id: 3, 
+    url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=1200", 
+    title: "Gourmet Dining", 
+    category: "Cuisine"
+  },
+  { 
+    id: 4, 
+    url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200", 
+    title: "Zen Garden", 
+    category: "Nature"
+  },
+  { 
+    id: 5, 
+    url: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=1200", 
+    title: "Mountain View", 
+    category: "Landscape"
+  },
+  { 
+    id: 6, 
+    url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200", 
+    title: "Grand Ballroom", 
+    category: "Events"
+  },
+  { 
+    id: 7, 
+    url: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200", 
+    title: "Private Terrace", 
+    category: "Luxury"
+  },
+  { 
+    id: 8, 
+    url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200", 
+    title: "Sunset Lounge", 
+    category: "Relaxation"
+  },
+  { 
+    id: 9, 
+    url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1200", 
+    title: "Main Entrance", 
+    category: "Resort"
+  },
+  { 
+    id: 10, 
+    url: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=1200", 
+    title: "Spa Sanctuary", 
+    category: "Wellness"
+  },
+  { 
+    id: 11, 
+    url: "https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0b?auto=format&fit=crop&q=80&w=1200", 
+    title: "Poolside Bar", 
+    category: "Dining"
+  },
+  { 
+    id: 12, 
+    url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1200", 
+    title: "Forest Trail", 
+    category: "Nature"
+  }
 ];
 
-const categories = ["All", "Resort", "Rooms", "Dining", "Events", "Nature"];
-
 export default function Gallery() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const filteredImages = activeCategory === "All" 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === activeCategory);
-
   return (
-    <main className="pt-32 pb-24 bg-resort-bg min-h-screen">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <FadeUp>
-            <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Visual Journey</p>
-            <h2 className="text-4xl md:text-6xl font-serif mb-8">Gallery</h2>
-            <div className="w-24 h-1 bg-resort-gold mx-auto mb-12" />
-          </FadeUp>
+    <main className="relative h-screen w-full overflow-hidden bg-[#0A1A14]">
+      {/* Textured Background Overlay */}
+      <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')] brightness-100 contrast-150" />
+      
+      {/* Header Overlay */}
+      <div className="absolute top-32 left-1/2 -translate-x-1/2 z-50 text-center pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <p className="text-resort-gold uppercase tracking-[0.4em] text-[10px] font-bold mb-4">Visual Narrative</p>
+          <h2 className="text-4xl md:text-6xl font-serif text-white/90">The Gallery</h2>
+          <p className="text-white/30 text-xs mt-4 tracking-widest uppercase">Drag to explore our sanctuary</p>
+        </motion.div>
+      </div>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            {categories.map((cat, i) => (
-              <FadeUp key={i} delay={i * 0.1}>
-                <button
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-8 py-3 rounded-full text-xs uppercase tracking-widest font-bold transition-all duration-500 border ${
-                    activeCategory === cat 
-                      ? "bg-resort-ink text-white border-resort-ink" 
-                      : "bg-white text-gray-400 border-gray-100 hover:border-resort-gold hover:text-resort-gold"
-                  }`}
-                >
-                  {cat}
-                </button>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredImages.map((img, i) => (
-              <motion.div
-                layout
-                key={img.url}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5, ease: [0.7, 0, 0.3, 1] }}
-                className="relative aspect-square overflow-hidden rounded-2xl group cursor-pointer"
+      {/* Draggable Container */}
+      <DraggableContainer variant="luxury" className="bg-transparent">
+        <GridBody>
+          {galleryImages.map((img) => (
+            <GridItem
+              key={img.id}
+              className="relative h-64 w-48 md:h-[500px] md:w-[400px] group"
+            >
+              <div 
+                className="relative w-full h-full"
                 onClick={() => setSelectedImage(img.url)}
               >
+                {/* Image */}
                 <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.8 }}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
                   src={img.url}
-                  alt={img.category}
+                  alt={img.title}
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-resort-ink/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20">
-                    <Maximize2 className="w-5 h-5" />
+                
+                {/* Soft Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
+                
+                {/* Hover Content */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
+                  <p className="text-resort-gold text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{img.category}</p>
+                  <h3 className="text-white text-xl md:text-3xl font-serif mb-4 md:mb-6">{img.title}</h3>
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 self-end">
+                    <Maximize2 className="w-4 h-4 md:w-5 md:h-5" />
                   </div>
                 </div>
-                <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                  <p className="text-white text-[10px] uppercase tracking-widest font-bold bg-resort-gold px-3 py-1 rounded-full">
-                    {img.category}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </StaggerContainer>
-      </div>
+              </div>
+            </GridItem>
+          ))}
+        </GridBody>
+      </DraggableContainer>
 
       {/* Lightbox */}
       <AnimatePresence>
@@ -100,28 +149,39 @@ export default function Gallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10000] bg-resort-ink/95 flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 z-[10000] bg-[#0A1A14]/98 flex items-center justify-center p-6 md:p-12 backdrop-blur-xl"
             onClick={() => setSelectedImage(null)}
           >
             <button 
-              className="absolute top-12 right-12 text-white/60 hover:text-white transition-colors"
+              className="absolute top-12 right-12 text-white/40 hover:text-white transition-all duration-500 hover:rotate-90"
               onClick={() => setSelectedImage(null)}
             >
-              <X className="w-8 h-8" />
+              <X className="w-10 h-10" />
             </button>
-            <motion.img
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.5, ease: [0.7, 0, 0.3, 1] }}
-              src={selectedImage}
-              alt="Selected"
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-              referrerPolicy="no-referrer"
-            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
+              className="relative max-w-6xl w-full h-full flex items-center justify-center"
+            >
+              <img
+                src={selectedImage}
+                alt="Selected"
+                className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_0_100px_rgba(0,0,0,0.5)]"
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Navigation Hint */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-50 flex items-center space-x-4 opacity-40">
+        <div className="w-8 h-[1px] bg-white" />
+        <span className="text-[10px] uppercase tracking-[0.5em] text-white font-bold">Explore the Sanctuary</span>
+        <div className="w-8 h-[1px] bg-white" />
+      </div>
     </main>
   );
 }
