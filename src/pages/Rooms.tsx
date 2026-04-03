@@ -7,14 +7,14 @@ import {
   Users, BedDouble, Maximize2, X, ChevronLeft, ChevronRight,
   ArrowRight
 } from 'lucide-react';
-import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
-import { cn } from '@/src/lib/utils';
+import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
+import { cn } from '@/lib/utils';
 import { useBooking } from '../context/BookingContext';
-import kingImg from '@/src/components/images/king2_11zon.png';
-import royalImg from '@/src/components/images/royal1.png';
-import preImg from '@/src/components/images/pre1_11zon.png';
-import tentsImg from '@/src/components/images/tents1.png';
-import villaImg from '@/src/components/images/yama3_11zon.png';
+import kingImg from '@/assets/images/king2.png';
+import royalImg from '@/assets/images/royal1.png';
+import preImg from '@/assets/images/pre1.png';
+import tentsImg from '@/assets/images/tents1.png';
+import villaImg from '@/assets/images/yama3.png';
 
 const facilities = [
   { icon: Car, label: "Private Parking" },

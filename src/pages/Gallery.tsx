@@ -5,7 +5,7 @@ import {
   GridBody,
   DraggableContainer,
   GridItem, 
-} from "@/src/components/ui/infinite-drag-scroll";
+} from "@/components/ui/infinite-drag-scroll";
 
 const galleryImages = [
   { 

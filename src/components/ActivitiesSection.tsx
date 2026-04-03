@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
+import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
 import { Waves, Mountain, Gamepad2, Bike, Sparkles } from 'lucide-react';
 
 const activities = [

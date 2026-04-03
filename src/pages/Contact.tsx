@@ -6,8 +6,8 @@ import {
   MessageSquare, Clock, Calendar, Users,
   ArrowRight, ExternalLink
 } from 'lucide-react';
-import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
-import { cn } from '@/src/lib/utils';
+import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
+import { cn } from '@/lib/utils';
 
 const contactCards = [
   {

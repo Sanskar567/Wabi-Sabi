@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { FadeUp } from '@/src/components/ui/MotionWrappers';
+import { FadeUp } from '@/components/ui/MotionWrappers';
 import { Calendar, Users, Heart, Briefcase } from 'lucide-react';
 
 const eventTypes = [

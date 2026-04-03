@@ -1,5 +1,5 @@
-import { cn } from '@/src/lib/utils';
-import logoImg from '@/src/components/images/WabiSabiLogo.webp';
+import { cn } from '@/lib/utils';
+import logoImg from '@/assets/images/logo.webp';
 
 interface LogoProps {
   className?: string;

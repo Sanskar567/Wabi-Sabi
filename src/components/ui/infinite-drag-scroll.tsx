@@ -14,7 +14,7 @@ import {
   createContext,
 } from "react";
 import { cva } from "class-variance-authority";
-import { cn } from "@/src/lib/utils";
+import { cn } from "@/lib/utils";
 
 //Types
 type variants = "default" | "masonry" | "polaroid" | "luxury";

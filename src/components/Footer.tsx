@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import logoImg from '@/src/components/images/WabiSabiLogo.webp';
+import logoImg from '@/assets/images/logo.webp';
 
 export default function Footer() {
   return (

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Hero from '@/src/components/Hero';
-import BookingBar from '@/src/components/BookingBar';
-import FloatingStrip from '@/src/components/FloatingStrip';
-import RoomsSection from '@/src/components/RoomsSection';
-import EventsSection from '@/src/components/EventsSection';
-import StatsSection from '@/src/components/StatsSection';
-import ActivitiesSection from '@/src/components/ActivitiesSection';
-import SplashScreen from '@/src/components/SplashScreen';
-import Testimonials from '@/src/components/ui/twitter-testimonial-cards';
-import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
+import Hero from '@/components/Hero';
+import BookingBar from '@/components/BookingBar';
+import FloatingStrip from '@/components/FloatingStrip';
+import RoomsSection from '@/components/RoomsSection';
+import EventsSection from '@/components/EventsSection';
+import StatsSection from '@/components/StatsSection';
+import ActivitiesSection from '@/components/ActivitiesSection';
+import SplashScreen from '@/components/SplashScreen';
+import Testimonials from '@/components/ui/twitter-testimonial-cards';
+import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
 import { motion, AnimatePresence } from 'motion/react';
 import { Wind, Sun, Waves, Coffee, MapPin, Play, X, Navigation } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
 
 const experiences = [
   { icon: Wind, title: "Pure Air", desc: "Breathe in the freshest mountain breeze." },
