@@ -2,10 +2,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import { cn } from '@/src/lib/utils';
-import heroImg1 from '@/src/assets/GalleryBackground_19_11zon.png';
-import heroImg2 from '@/src/assets/yama_villa_hero_2.webp';
-import heroImg3 from '@/src/assets/garden.png';
-import heroImg4 from '@/src/assets/pool_hero.png';
+import heroImg1 from '@/src/components/images/GalleryBackground_19_11zon.png';
+import heroImg2 from '@/src/components/images/yama_villa_hero_2.webp';
+import heroImg3 from '@/src/components/images/garden.png';
+import heroImg4 from '@/src/components/images/pool_hero.png';
 
 const slides = [
   {

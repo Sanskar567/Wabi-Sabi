@@ -2,11 +2,11 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { FadeUp, StaggerContainer } from '@/src/components/ui/MotionWrappers';
 import { Maximize2, Users, BedDouble, ArrowRight } from 'lucide-react';
-import kingImg from '@/src/assets/king2_11zon.png';
-import royalImg from '@/src/assets/royal1.png';
-import preImg from '@/src/assets/pre1_11zon.png';
-import tentsImg from '@/src/assets/tents1.png';
-import villaImg from '@/src/assets/yama3_11zon.png';
+import kingImg from '@/src/components/images/king2_11zon.png';
+import royalImg from '@/src/components/images/royal1.png';
+import preImg from '@/src/components/images/pre1_11zon.png';
+import tentsImg from '@/src/components/images/tents1.png';
+import villaImg from '@/src/components/images/yama3_11zon.png';
 
 const rooms = [
   {

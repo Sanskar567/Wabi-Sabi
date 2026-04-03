@@ -9,7 +9,7 @@ import {
   useMotionValue,
 } from 'motion/react';
 import { wrap } from 'motion/react';
-import logoImg from '@/src/assets/WabiSabiLogo.webp';
+import logoImg from '@/src/components/images/WabiSabiLogo.webp';
 
 const items = [
   "Mountain Sanctuary",
