@@ -7,6 +7,7 @@ import RoomsSection from '@/components/RoomsSection';
 import EventsSection from '@/components/EventsSection';
 import StatsSection from '@/components/StatsSection';
 import ActivitiesSection from '@/components/ActivitiesSection';
+import HouseRules from '@/components/HouseRules';
 import SplashScreen from '@/components/SplashScreen';
 import Testimonials from '@/components/ui/twitter-testimonial-cards';
 import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
@@ -102,7 +103,10 @@ export default function Home() {
   return (
     <main className="overflow-hidden">
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
-      <Hero startAnimation={startHeroAnim} />
+      <Hero 
+        startAnimation={startHeroAnim} 
+        onWatchVideo={() => setActiveVideo("https://www.youtube.com/embed/EE9igHLcJ0M")}
+      />
       <BookingBar startAnimation={startHeroAnim} />
       <FloatingStrip startAnimation={startHeroAnim} />
       
@@ -449,6 +453,17 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* House Rules Section */}
+      <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <FadeUp className="text-center mb-16">
+            <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Good to Know</p>
+            <h2 className="text-4xl md:text-6xl font-serif text-resort-ink">House Rules</h2>
+          </FadeUp>
+          <HouseRules />
         </div>
       </section>
 

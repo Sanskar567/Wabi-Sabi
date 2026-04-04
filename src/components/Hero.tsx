@@ -36,9 +36,10 @@ const slides = [
 
 interface HeroProps {
   startAnimation?: boolean;
+  onWatchVideo?: () => void;
 }
 
-export default function Hero({ startAnimation }: HeroProps) {
+export default function Hero({ startAnimation, onWatchVideo }: HeroProps) {
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -110,24 +111,25 @@ export default function Hero({ startAnimation }: HeroProps) {
       <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-center pt-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center lg:text-left">
             <div className="overflow-hidden">
               <h1 
                 ref={titleRef}
-                className="text-5xl md:text-7xl lg:text-8xl text-white font-serif leading-[1.1] opacity-0 translate-y-20"
+                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white font-serif leading-[1.1] opacity-0 translate-y-20"
               >
                 Creating happy and <br />
                 <span className="italic text-resort-gold">everlasting</span> experiences
               </h1>
             </div>
             
-          
-
-            <div className="flex items-center space-x-8 pt-4">
-              <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-6 sm:space-y-0 sm:space-x-8 pt-4">
+              <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl w-full sm:w-auto">
                 Explore Property
               </button>
-              <button className="flex items-center space-x-4 text-white group">
+              <button 
+                onClick={onWatchVideo}
+                className="flex items-center space-x-4 text-white group"
+              >
                 <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-resort-ink transition-all duration-500">
                   <Play className="w-4 h-4 fill-current" />
                 </div>

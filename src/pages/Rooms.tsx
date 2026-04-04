@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   Car, Utensils, Sparkles, Wifi, ConciergeBell, 
   Trees, Wind, Waves, CreditCard, Gamepad2,
   Users, BedDouble, Maximize2, X, ChevronLeft, ChevronRight,
-  ArrowRight
+  ArrowRight, RefreshCw, CheckCircle2
 } from 'lucide-react';
 import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
 import { cn } from '@/lib/utils';
 import { useBooking } from '../context/BookingContext';
+import { bookingService } from '@/services/bookingService';
+import HouseRules from '@/components/HouseRules';
 import kingImg from '@/assets/images/king2.png';
 import royalImg from '@/assets/images/royal1.png';
 import preImg from '@/assets/images/pre1.png';
@@ -29,9 +31,9 @@ const facilities = [
   { icon: Gamepad2, label: "Game Zone" },
 ];
 
-const roomsData = [
+const INITIAL_ROOMS = [
   {
-    id: 'king-room',
+    id: 'king',
     title: "King Room",
     price: "8,500",
     image: kingImg,
@@ -48,7 +50,7 @@ const roomsData = [
     amenities: ["Mountain View", "Mini Bar", "Smart TV", "Coffee Maker", "Luxury Toiletries"]
   },
   {
-    id: 'royal-suite',
+    id: 'royal',
     title: "Royal Suite",
     price: "12,500",
     image: royalImg,
@@ -65,7 +67,7 @@ const roomsData = [
     amenities: ["Private Balcony", "Separate Living Area", "Jacuzzi", "Butler Service", "Premium Sound System"]
   },
   {
-    id: 'premium-suite',
+    id: 'premium',
     title: "Premium Suite",
     price: "10,500",
     image: preImg,
@@ -82,7 +84,7 @@ const roomsData = [
     amenities: ["Garden View", "Private Terrace", "Rain Shower", "Work Desk", "Plush Bathrobes"]
   },
   {
-    id: 'swiss-tent',
+    id: 'swiss',
     title: "Swiss Tent",
     price: "6,500",
     image: tentsImg,
@@ -99,7 +101,7 @@ const roomsData = [
     amenities: ["Outdoor Deck", "Portable AC", "Cozy Lighting", "Nature Proximity", "Private En-suite"]
   },
   {
-    id: 'yama-villa',
+    id: 'villa',
     title: "Yama Villa",
     price: "22,000",
     image: villaImg,
@@ -125,10 +127,33 @@ const experiences = [
 ];
 
 export default function Rooms() {
-  const [selectedRoom, setSelectedRoom] = useState<typeof roomsData[0] | null>(null);
+  const [rooms, setRooms] = useState(INITIAL_ROOMS);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [lastSynced, setLastSynced] = useState<string | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<typeof INITIAL_ROOMS[0] | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { updateBooking } = useBooking();
   const navigate = useNavigate();
+
+  const syncPrices = async () => {
+    setIsSyncing(true);
+    try {
+      const latestPrices = await bookingService.fetchLatestPrices();
+      setRooms(prevRooms => prevRooms.map(room => {
+        const latest = latestPrices.find(p => p.id === room.id);
+        return latest ? { ...room, price: latest.price } : room;
+      }));
+      setLastSynced(new Date().toLocaleTimeString());
+    } catch (error) {
+      console.error('Failed to sync prices:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  useEffect(() => {
+    syncPrices();
+  }, []);
 
   const handleBookNow = (roomTitle: string) => {
     updateBooking({ roomType: roomTitle });
@@ -224,11 +249,31 @@ export default function Rooms() {
         <div className="max-w-7xl mx-auto px-6">
           <FadeUp className="mb-16">
             <p className="text-resort-gold uppercase tracking-[0.3em] text-xs font-bold mb-4">Accommodations</p>
-            <h2 className="text-4xl md:text-6xl font-serif text-resort-ink">Choose Your Sanctuary</h2>
+            <h2 className="text-4xl md:text-6xl font-serif text-resort-ink mb-6">Choose Your Sanctuary</h2>
+            
+            <div className="flex items-center space-x-4">
+              <button 
+                onClick={syncPrices}
+                disabled={isSyncing}
+                className={cn(
+                  "flex items-center space-x-2 px-4 py-2 rounded-full border border-resort-gold/20 text-[10px] uppercase tracking-widest font-bold transition-all",
+                  isSyncing ? "bg-resort-gold/10 text-resort-gold cursor-not-allowed" : "text-resort-ink hover:bg-resort-gold hover:text-white"
+                )}
+              >
+                <RefreshCw className={cn("w-3 h-3", isSyncing && "animate-spin")} />
+                <span>{isSyncing ? 'Syncing with Booking.com...' : 'Sync Prices'}</span>
+              </button>
+              {lastSynced && !isSyncing && (
+                <div className="flex items-center space-x-2 text-[10px] text-green-600 font-bold uppercase tracking-widest">
+                  <CheckCircle2 className="w-3 h-3" />
+                  <span>Synced at {lastSynced}</span>
+                </div>
+              )}
+            </div>
           </FadeUp>
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {roomsData.map((room, i) => (
+            {rooms.map((room, i) => (
               <motion.div
                 key={room.id}
                 variants={{
@@ -480,6 +525,11 @@ export default function Rooms() {
                         </div>
                       ))}
                     </div>
+                  </div>
+
+                  <div className="pt-10 border-t border-gray-100">
+                    <h4 className="text-xs uppercase tracking-widest font-bold text-resort-ink mb-8">House Rules</h4>
+                    <HouseRules />
                   </div>
                 </div>
 

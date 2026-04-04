@@ -7,6 +7,7 @@ import {
   CreditCard, User, ShieldCheck, Info, CheckCircle2 
 } from 'lucide-react';
 import DatePicker from 'react-datepicker';
+import HouseRules from '@/components/HouseRules';
 
 const steps = [
   { id: 1, title: 'Booking Info', icon: Info },
@@ -20,6 +21,23 @@ export default function Booking() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(0);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  const constructBookingUrl = () => {
+    const baseUrl = "https://www.booking.com/hotel/in/wabi-sabi-resort-nashik.html";
+    if (!booking.checkIn || !booking.checkOut) return baseUrl;
+
+    try {
+      const checkin = new Date(booking.checkIn).toISOString().split('T')[0];
+      const checkout = new Date(booking.checkOut).toISOString().split('T')[0];
+      const adults = booking.guests || 2;
+      const rooms = 1;
+
+      return `${baseUrl}?checkin=${checkin}&checkout=${checkout}&group_adults=${adults}&no_rooms=${rooms}`;
+    } catch (e) {
+      return baseUrl;
+    }
+  };
 
   const nextStep = () => {
     if (currentStep === 2) {
@@ -51,8 +69,31 @@ export default function Booking() {
       setDirection(1);
       setCurrentStep(currentStep + 1);
     } else {
-      navigate('/thank-you');
+      // Final Step: Redirect to Booking.com
+      handleFinalRedirect();
     }
+  };
+
+  const handleFinalRedirect = () => {
+    setIsRedirecting(true);
+    
+    // Tracking
+    console.log('Analytics: Booking Redirect Clicked', {
+      property: 'wabi-sabi-resort-nashik',
+      checkin: booking.checkIn,
+      checkout: booking.checkOut,
+      guests: booking.guests,
+      timestamp: new Date().toISOString()
+    });
+
+    const url = constructBookingUrl();
+
+    // 2 second delay for UX
+    setTimeout(() => {
+      window.open(url, '_blank');
+      setIsRedirecting(false);
+      navigate('/thank-you');
+    }, 2000);
   };
 
   const prevStep = () => {
@@ -152,7 +193,7 @@ export default function Booking() {
                   className="bg-resort-ink text-white px-10 py-4 rounded-full flex items-center space-x-3 hover:bg-resort-gold transition-all duration-500 group"
                 >
                   <span className="text-xs uppercase tracking-widest font-bold">
-                    {currentStep === steps.length ? 'Confirm Booking' : 'Next Step'}
+                    {currentStep === steps.length ? 'Proceed to Secure Booking' : 'Next Step'}
                   </span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -215,6 +256,44 @@ export default function Booking() {
           </div>
         </div>
       </div>
+
+      {/* Redirect Overlay */}
+      <AnimatePresence>
+        {isRedirecting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-resort-ink/95 backdrop-blur-md flex flex-col items-center justify-center text-white p-6 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="space-y-8 max-w-md"
+            >
+              <div className="relative w-24 h-24 mx-auto">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border-4 border-resort-gold/20 border-t-resort-gold rounded-full"
+                />
+                <ShieldCheck className="absolute inset-0 m-auto w-10 h-10 text-resort-gold" />
+              </div>
+              <div className="space-y-4">
+                <h2 className="text-2xl font-serif">Secure Redirect</h2>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  You're being redirected to our official Booking.com page to securely complete your reservation.
+                </p>
+                <div className="flex items-center justify-center space-x-2 pt-4">
+                  <div className="w-1.5 h-1.5 bg-resort-gold rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 bg-resort-gold rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 bg-resort-gold rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -369,41 +448,10 @@ function Step3Payment({ booking, updateBooking }: any) {
 }
 
 function Step4Guidelines() {
-  const guidelines = [
-    "Check-in time is 2:00 PM and Check-out time is 11:00 AM.",
-    "Valid government ID is required for all guests during check-in.",
-    "Free cancellation up to 48 hours before the check-in date.",
-    "Smoking is strictly prohibited inside the rooms.",
-    "Pets are not allowed within the resort premises.",
-    "Full payment to be made at the property via Cash/Card/UPI."
-  ];
-
   return (
-    <div className="space-y-8">
-      <h2 className="text-3xl font-serif text-resort-ink">Resort Guidelines</h2>
-      <div className="space-y-4">
-        {guidelines.map((text, i) => (
-          <div key={i} className="flex items-start space-x-4 p-4 bg-resort-bg rounded-xl border border-gray-100">
-            <CheckCircle2 className="w-5 h-5 text-resort-gold shrink-0 mt-0.5" />
-            <p className="text-sm text-resort-ink/70 leading-relaxed">{text}</p>
-          </div>
-        ))}
-      </div>
-      <div className="p-6 bg-resort-ink text-white rounded-2xl flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="w-10 h-10 bg-resort-gold rounded-full flex items-center justify-center">
-            <ShieldCheck className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-widest">Secure Booking</p>
-            <p className="text-[10px] text-white/60">Your data is encrypted and safe</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-xs font-bold uppercase tracking-widest text-resort-gold">Verified</p>
-          <p className="text-[10px] text-white/60">Wabi Sabi Resorts</p>
-        </div>
-      </div>
+    <div className="space-y-8 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar">
+      <h2 className="text-3xl font-serif text-resort-ink">House Rules</h2>
+      <HouseRules />
     </div>
   );
 }

@@ -31,30 +31,32 @@ export default function Navbar() {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  const isDark = isScrolled || isMobileMenuOpen;
+
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 w-full z-50 transition-all duration-700 px-6 py-4 md:px-12 md:py-8',
-        isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3 md:py-4' : 'bg-transparent'
+        'fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 py-4 md:px-12 md:py-6',
+        isDark ? 'bg-white shadow-sm py-3 md:py-4' : 'bg-transparent'
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="relative z-50 flex items-center space-x-4 group">
-          <Logo className={cn(
-            "w-10 h-10 md:w-12 md:h-12 transition-all duration-700 group-hover:scale-110",
-            isScrolled ? "brightness-0" : "invert brightness-200"
-          )} />
+        <Link to="/" className="relative z-50 flex items-center space-x-3 md:space-x-4 group">
+          <Logo 
+            variant={isDark ? 'dark' : 'light'}
+            className="w-8 h-8 md:w-12 md:h-12 transition-all duration-300 group-hover:scale-110" 
+          />
           <div className="flex flex-col">
             <span className={cn(
-              "text-lg md:text-xl font-serif tracking-[0.3em] uppercase transition-colors duration-700",
-              isScrolled ? "text-resort-ink" : "text-white"
+              "text-base md:text-xl font-serif tracking-[0.2em] md:tracking-[0.3em] uppercase transition-colors duration-300",
+              isDark ? "text-resort-ink" : "text-white"
             )}>
               Wabi Sabi
             </span>
             <span className={cn(
-              "text-[8px] md:text-[10px] tracking-[0.4em] uppercase transition-colors duration-700",
-              isScrolled ? "text-resort-gold" : "text-resort-gold/80"
+              "text-[7px] md:text-[10px] tracking-[0.3em] md:tracking-[0.4em] uppercase transition-colors duration-300",
+              isDark ? "text-resort-gold" : "text-resort-gold/80"
             )}>
               Resorts
             </span>
@@ -68,21 +70,21 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               className={cn(
-                "relative text-[11px] uppercase tracking-[0.3em] font-bold transition-colors duration-700 group",
-                isScrolled ? "text-resort-ink" : "text-white/80 hover:text-white"
+                "relative text-[11px] uppercase tracking-[0.3em] font-bold transition-colors duration-300 group",
+                isDark ? "text-resort-ink" : "text-white/80 hover:text-white"
               )}
             >
               {link.name}
               <span className={cn(
-                "absolute -bottom-2 left-0 w-0 h-[1px] transition-all duration-500 group-hover:w-full",
-                isScrolled ? "bg-resort-gold" : "bg-white"
+                "absolute -bottom-2 left-0 w-0 h-[1px] transition-all duration-300 group-hover:w-full",
+                isDark ? "bg-resort-gold" : "bg-white"
               )} />
               {location.pathname === link.path && (
                 <motion.span
                   layoutId="navUnderline"
                   className={cn(
                     "absolute -bottom-2 left-0 w-full h-[1px]",
-                    isScrolled ? "bg-resort-gold" : "bg-white"
+                    isDark ? "bg-resort-gold" : "bg-white"
                   )}
                 />
               )}
@@ -95,8 +97,8 @@ export default function Navbar() {
           <Link 
             to="/booking" 
             className={cn(
-              "flex items-center text-[10px] tracking-[0.2em] uppercase font-bold transition-all duration-700 border-b pb-1",
-              isScrolled ? "text-resort-ink border-resort-ink/20 hover:border-resort-gold" : "text-white border-white/20 hover:border-white"
+              "flex items-center text-[10px] tracking-[0.2em] uppercase font-bold transition-all duration-300 border-b pb-1",
+              isDark ? "text-resort-ink border-resort-ink/20 hover:border-resort-gold" : "text-white border-white/20 hover:border-white"
             )}
           >
             <Phone className="w-3 h-3 mr-2" />
@@ -106,29 +108,30 @@ export default function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden relative z-50 p-2 group"
+          className="md:hidden relative z-50 p-2 group outline-none"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
         >
           <div className="space-y-1.5">
             <motion.span 
               animate={isMobileMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
               className={cn(
-                "block w-6 h-[1px] transition-colors duration-500",
-                isMobileMenuOpen || isScrolled ? "bg-resort-ink" : "bg-white"
+                "block w-6 h-[1.5px] transition-colors duration-300",
+                isDark ? "bg-resort-ink" : "bg-white"
               )} 
             />
             <motion.span 
               animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               className={cn(
-                "block w-6 h-[1px] transition-colors duration-500",
-                isMobileMenuOpen || isScrolled ? "bg-resort-ink" : "bg-white"
+                "block w-6 h-[1.5px] transition-colors duration-300",
+                isDark ? "bg-resort-ink" : "bg-white"
               )} 
             />
             <motion.span 
               animate={isMobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
               className={cn(
-                "block w-6 h-[1px] transition-colors duration-500",
-                isMobileMenuOpen || isScrolled ? "bg-resort-ink" : "bg-white"
+                "block w-6 h-[1.5px] transition-colors duration-300",
+                isDark ? "bg-resort-ink" : "bg-white"
               )} 
             />
           </div>

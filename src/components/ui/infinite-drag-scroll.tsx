@@ -110,6 +110,8 @@ export const DraggableContainer = ({
             onMouseDown={handleIsDragging}
             onMouseUp={handleIsNotDragging}
             onMouseLeave={handleIsNotDragging}
+            onTouchStart={handleIsDragging}
+            onTouchEnd={handleIsNotDragging}
             style={{ x, y }}
             ref={ref}
           >

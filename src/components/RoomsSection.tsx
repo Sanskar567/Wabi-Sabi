@@ -1,15 +1,19 @@
-import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
-import { Maximize2, Users, BedDouble, ArrowRight } from 'lucide-react';
+import { Maximize2, Users, BedDouble, ArrowRight, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { bookingService, RoomPrice } from '@/services/bookingService';
 import kingImg from '@/assets/images/king2.png';
 import royalImg from '@/assets/images/royal1.png';
 import preImg from '@/assets/images/pre1.png';
 import tentsImg from '@/assets/images/tents1.png';
 import villaImg from '@/assets/images/yama3.png';
 
-const rooms = [
+const INITIAL_ROOMS = [
   {
+    id: 'king',
     title: "King Room",
     price: "8,500",
     image: kingImg,
@@ -19,6 +23,7 @@ const rooms = [
     bed: "King Size"
   },
   {
+    id: 'royal',
     title: "Royal Suite",
     price: "12,500",
     image: royalImg,
@@ -28,6 +33,7 @@ const rooms = [
     bed: "King Size + Sofa Bed"
   },
   {
+    id: 'premium',
     title: "Premium Suite",
     price: "10,500",
     image: preImg,
@@ -37,6 +43,7 @@ const rooms = [
     bed: "King Size"
   },
   {
+    id: 'swiss',
     title: "Swiss Tents",
     price: "6,500",
     image: tentsImg,
@@ -46,6 +53,7 @@ const rooms = [
     bed: "Queen Size"
   },
   {
+    id: 'villa',
     title: "Luxury Villa",
     price: "25,000",
     image: villaImg,
@@ -57,6 +65,31 @@ const rooms = [
 ];
 
 export default function RoomsSection() {
+  const [rooms, setRooms] = useState(INITIAL_ROOMS);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [lastSynced, setLastSynced] = useState<string | null>(null);
+
+  const syncPrices = async () => {
+    setIsSyncing(true);
+    try {
+      const latestPrices = await bookingService.fetchLatestPrices();
+      setRooms(prevRooms => prevRooms.map(room => {
+        const latest = latestPrices.find(p => p.id === room.id);
+        return latest ? { ...room, price: latest.price } : room;
+      }));
+      setLastSynced(new Date().toLocaleTimeString());
+    } catch (error) {
+      console.error('Failed to sync prices:', error);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  useEffect(() => {
+    // Initial sync
+    syncPrices();
+  }, []);
+
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -68,6 +101,26 @@ export default function RoomsSection() {
               Every room at Wabi Sabi is a testament to the beauty of imperfection and the tranquility of the natural world. 
               Find your perfect sanctuary among our curated selection of suites and villas.
             </p>
+            
+            <div className="mt-8 flex items-center space-x-4">
+              <button 
+                onClick={syncPrices}
+                disabled={isSyncing}
+                className={cn(
+                  "flex items-center space-x-2 px-4 py-2 rounded-full border border-resort-gold/20 text-[10px] uppercase tracking-widest font-bold transition-all",
+                  isSyncing ? "bg-resort-gold/10 text-resort-gold cursor-not-allowed" : "text-resort-ink hover:bg-resort-gold hover:text-white"
+                )}
+              >
+                <RefreshCw className={cn("w-3 h-3", isSyncing && "animate-spin")} />
+                <span>{isSyncing ? 'Syncing with Booking.com...' : 'Sync Prices'}</span>
+              </button>
+              {lastSynced && !isSyncing && (
+                <div className="flex items-center space-x-2 text-[10px] text-green-600 font-bold uppercase tracking-widest">
+                  <CheckCircle2 className="w-3 h-3" />
+                  <span>Synced at {lastSynced}</span>
+                </div>
+              )}
+            </div>
           </FadeUp>
           <FadeUp delay={0.2}>
             <button className="text-xs uppercase tracking-[0.3em] font-bold border-b border-resort-ink/20 pb-2 hover:border-resort-gold transition-colors">
