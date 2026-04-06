@@ -11,7 +11,7 @@ const slides = [
   {
     title: "Mountain Sanctuary",
     location: "Igatpuri, Maharashtra",
-    image: "./assets/images/gallery-background.png",
+    image: ".src/assets/images/gallery-background.png",
     desc: "Experience the harmony of nature and luxury in our mountain retreat."
   },
   {
