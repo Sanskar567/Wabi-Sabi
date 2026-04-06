@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import heroImg1 from '@/assets/images/gallery-background.png';
 import heroImg2 from '@/assets/images/yama_villa_hero.webp';
 import heroImg3 from '@/assets/images/garden.png';
-import heroImg4 from '@/assets/images/pool-hero.png';
+import heroImg4 from '@/assets/images/pool_hero.png';
 
 const slides = [
   {
