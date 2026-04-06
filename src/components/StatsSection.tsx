@@ -22,7 +22,7 @@ export default function StatsSection() {
               }}
               className="text-center space-y-4 group"
             >
-              <h3 className="text-5xl md:text-7xl font-serif text-resort-ink group-hover:text-resort-gold transition-colors duration-500">{stat.value}</h3>
+              <h3 className="text-5xl md:text-7xl font-serif text-resort-green group-hover:text-resort-gold transition-colors duration-500">{stat.value}</h3>
               <div className="w-12 h-[1px] bg-resort-gold mx-auto group-hover:w-24 transition-all duration-500" />
               <p className="text-gray-400 text-xs uppercase tracking-[0.4em] font-bold">{stat.label}</p>
             </motion.div>

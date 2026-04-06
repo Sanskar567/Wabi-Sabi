@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ChevronLeft, ChevronRight, Play, ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import heroImg1 from '@/assets/images/gallery-background.png';
-import heroImg2 from '@/assets/images/yama_villa_hero.webp';
+import heroImg2 from '@/assets/images/yama-villa-hero.webp';
 import heroImg3 from '@/assets/images/garden.png';
-import heroImg4 from '@/assets/images/pool_hero.png';
+import heroImg4 from '@/assets/images/pool-hero.png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const slides = [
   {
@@ -41,196 +44,227 @@ interface HeroProps {
 
 export default function Hero({ startAnimation, onWatchVideo }: HeroProps) {
   const [activeSlide, setActiveSlide] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const bgContainerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtextRef = useRef<HTMLParagraphElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const locationRef = useRef<HTMLParagraphElement>(null);
 
+  // Parallax and Scroll Animation
+  useEffect(() => {
+    if (!sectionRef.current || !bgContainerRef.current || !contentRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Parallax background
+      gsap.to(bgContainerRef.current, {
+        yPercent: 30,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+
+      // Fade out content on scroll
+      gsap.to(contentRef.current, {
+        y: -100,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Initial load animation
   useEffect(() => {
     if (startAnimation) {
       const tl = gsap.timeline();
       
-      tl.to(titleRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power4.out"
-      }, 0.2);
+      tl.fromTo(locationRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+        0.2
+      );
 
-      tl.to(subtextRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: "power4.out"
-      }, 0.4);
+      tl.fromTo(titleRef.current, 
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: "power4.out" },
+        0.4
+      );
 
-      tl.to(carouselRef.current, {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power4.out"
-      }, 0.6);
+      tl.fromTo(descRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+        0.6
+      );
     }
   }, [startAnimation]);
 
+  const goToSlide = useCallback((index: number) => {
+    if (isAnimating || index === activeSlide) return;
+    setIsAnimating(true);
+    
+    // Animate text out
+    gsap.to([locationRef.current, titleRef.current, descRef.current], {
+      y: -20,
+      opacity: 0,
+      duration: 0.4,
+      stagger: 0.05,
+      ease: "power2.in",
+      onComplete: () => {
+        setActiveSlide(index);
+        
+        // Animate text in
+        gsap.fromTo([locationRef.current, titleRef.current, descRef.current],
+          { y: 20, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out", onComplete: () => setIsAnimating(false) }
+        );
+      }
+    });
+  }, [activeSlide, isAnimating]);
+
   const nextSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev + 1) % slides.length);
-  }, []);
+    goToSlide((activeSlide + 1) % slides.length);
+  }, [activeSlide, goToSlide]);
 
   const prevSlide = useCallback(() => {
-    setActiveSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  }, []);
+    goToSlide((activeSlide - 1 + slides.length) % slides.length);
+  }, [activeSlide, goToSlide]);
 
-  // Auto-play timer (3 second gap)
+  // Auto-play timer
   useEffect(() => {
     if (!startAnimation) return;
-    
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 3000);
-
+    const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
   }, [startAnimation, nextSlide]);
 
   return (
-    <section className="relative h-screen min-h-[800px] w-full overflow-hidden bg-resort-ink">
-      {/* Background Image Layer */}
-      <div 
-        ref={bgRef}
-        className="absolute inset-0 z-0 transition-all duration-1000 ease-in-out scale-105"
-      >
-        <img 
-          src={slides[activeSlide].image} 
-          alt="Resort Background"
-          className="w-full h-full object-cover opacity-40"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-resort-ink/60 via-transparent to-resort-ink/80" />
+    <section ref={sectionRef} className="relative h-screen min-h-[800px] w-full overflow-hidden bg-resort-green">
+      {/* Background Images with Parallax Container */}
+      <div ref={bgContainerRef} className="absolute inset-0 z-0 w-full h-[130%] -top-[15%]">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={cn(
+              "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+              index === activeSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+            )}
+          >
+            <img 
+              src={slide.image} 
+              alt={slide.title}
+              className={cn(
+                "w-full h-full object-cover transition-transform duration-[10000ms] ease-linear",
+                index === activeSlide ? "scale-110" : "scale-100"
+              )}
+              referrerPolicy="no-referrer"
+            />
+            {/* Premium Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
+          </div>
+        ))}
       </div>
 
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-center pt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Content */}
-          <div className="space-y-8 text-center lg:text-left">
+      {/* Content */}
+      <div ref={contentRef} className="relative z-10 h-full max-w-7xl mx-auto px-6 flex flex-col justify-end pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+          
+          {/* Main Text */}
+          <div className="lg:col-span-8 space-y-6">
             <div className="overflow-hidden">
+              <p 
+                ref={locationRef}
+                className="text-resort-gold uppercase tracking-[0.3em] text-xs md:text-sm font-bold mb-2"
+              >
+                {slides[activeSlide].location}
+              </p>
+            </div>
+            <div className="overflow-hidden py-2">
               <h1 
                 ref={titleRef}
-                className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-white font-serif leading-[1.1] opacity-0 translate-y-20"
+                className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white font-serif leading-[1.1]"
               >
-                Creating happy and <br />
-                <span className="italic text-resort-gold">everlasting</span> experiences
+                {slides[activeSlide].title}
               </h1>
             </div>
+            <div className="overflow-hidden max-w-xl">
+              <p 
+                ref={descRef}
+                className="text-white/90 text-base md:text-lg font-light leading-relaxed"
+              >
+                {slides[activeSlide].desc}
+              </p>
+            </div>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-6 sm:space-y-0 sm:space-x-8 pt-4">
-              <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl w-full sm:w-auto">
-                Explore Property
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-6 sm:space-y-0 sm:space-x-8 pt-8">
+              <button className="bg-resort-gold text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-white hover:text-resort-ink transition-all duration-500 shadow-xl">
+                Discover More
               </button>
               <button 
                 onClick={onWatchVideo}
                 className="flex items-center space-x-4 text-white group"
               >
                 <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-white group-hover:text-resort-ink transition-all duration-500">
-                  <Play className="w-4 h-4 fill-current" />
+                  <Play className="w-4 h-4 fill-current ml-1" />
                 </div>
-                <span className="uppercase tracking-widest text-[10px] font-bold">Watch Video</span>
+                <span className="uppercase tracking-widest text-[10px] font-bold">Watch Film</span>
               </button>
             </div>
           </div>
 
-          {/* 3D Curved Carousel */}
-          <div 
-            ref={carouselRef}
-            className="relative h-[400px] md:h-[500px] perspective-1000 opacity-0 translate-y-20 hidden md:flex items-center justify-center"
-          >
-            <div className="relative w-full h-full preserve-3d flex items-center justify-center">
-              {slides.map((slide, i) => {
-                const offset = (i - activeSlide + slides.length) % slides.length;
-                let rotateY = 0;
-                let translateZ = 0;
-                let opacity = 0;
-                let zIndex = 0;
-                let scale = 1;
-
-                if (offset === 0) {
-                  rotateY = 0;
-                  translateZ = 200;
-                  opacity = 1;
-                  zIndex = 10;
-                  scale = 1.1;
-                } else if (offset === 1 || offset === - (slides.length - 1)) {
-                  rotateY = -45;
-                  translateZ = 0;
-                  opacity = 0.5;
-                  zIndex = 5;
-                  scale = 0.8;
-                } else if (offset === slides.length - 1 || offset === -1) {
-                  rotateY = 45;
-                  translateZ = 0;
-                  opacity = 0.5;
-                  zIndex = 5;
-                  scale = 0.8;
-                }
-
-                return (
-                  <div
-                    key={i}
-                    className="absolute w-[300px] h-[450px] transition-all duration-1000 ease-out cursor-pointer"
-                    style={{
-                      transform: `rotateY(${rotateY}deg) translateZ(${translateZ}px) scale(${scale})`,
-                      opacity: opacity,
-                      zIndex: zIndex,
-                    }}
-                    onClick={() => setActiveSlide(i)}
-                  >
-                    <div className="w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-                      <img 
-                        src={slide.image} 
-                        alt={slide.title}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
-                        <p className="text-resort-gold text-[10px] uppercase tracking-widest mb-2">{slide.location}</p>
-                        <h3 className="text-white text-2xl font-serif">{slide.title}</h3>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Carousel Controls */}
-            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex items-center space-x-6">
+          {/* Controls & Pagination */}
+          <div className="lg:col-span-4 flex flex-col items-start lg:items-end space-y-8 lg:pb-4">
+            <div className="flex items-center space-x-4">
               <button 
                 onClick={prevSlide}
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500 backdrop-blur-sm"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <div className="flex space-x-2">
-                {slides.map((_, i) => (
-                  <div 
-                    key={i}
-                    className={cn(
-                      "w-2 h-2 rounded-full transition-all duration-500",
-                      activeSlide === i ? "bg-resort-gold w-8" : "bg-white/20"
-                    )}
-                  />
-                ))}
-              </div>
               <button 
                 onClick={nextSlide}
-                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500"
+                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-resort-ink transition-all duration-500 backdrop-blur-sm"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
+            
+            <div className="flex items-center space-x-4 w-full max-w-[240px]">
+              <span className="text-white font-mono text-sm">
+                {String(activeSlide + 1).padStart(2, '0')}
+              </span>
+              <div className="h-[1px] flex-grow bg-white/20 relative">
+                <div 
+                  className="absolute top-0 left-0 h-full bg-resort-gold transition-all duration-500"
+                  style={{ width: `${((activeSlide + 1) / slides.length) * 100}%` }}
+                />
+              </div>
+              <span className="text-white/50 font-mono text-sm">
+                {String(slides.length).padStart(2, '0')}
+              </span>
+            </div>
           </div>
+
         </div>
       </div>
 
-      
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center animate-bounce">
+        <span className="text-white/50 text-[9px] uppercase tracking-[0.3em] mb-2">Scroll</span>
+        <ArrowDown className="w-4 h-4 text-white/50" />
+      </div>
     </section>
   );
 }

@@ -4,7 +4,7 @@ import logoImg from '@/assets/images/logo.webp';
 
 export default function Footer() {
   return (
-    <footer className="bg-resort-ink text-white pt-24 pb-12">
+    <footer className="bg-resort-green text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
         {/* Newsletter and Hours Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24 items-center">

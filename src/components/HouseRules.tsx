@@ -70,7 +70,7 @@ export default function HouseRules() {
         ))}
       </div>
       
-      <div className="p-8 bg-resort-ink text-white rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="p-8 bg-resort-green text-white rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center space-x-6">
           <div className="w-14 h-14 bg-resort-gold rounded-full flex items-center justify-center shrink-0">
             <ShieldCheck className="w-7 h-7 text-white" />

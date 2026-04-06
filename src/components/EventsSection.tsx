@@ -11,7 +11,7 @@ const eventTypes = [
 
 export default function EventsSection() {
   return (
-    <section className="py-24 bg-resort-ink text-white overflow-hidden">
+    <section className="py-24 bg-resort-green text-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
           {/* Content */}

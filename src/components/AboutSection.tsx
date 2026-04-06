@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import about_img from '@/assets/images/Wabi sabi.png'
+import about_img_2 from '@/assets/images/edit3.png'
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -35,7 +37,7 @@ export default function AboutSection() {
               className="absolute inset-0 w-full h-[120%]"
             >
               <img 
-                src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1200" 
+                src= {about_img_2}
                 alt="Sanctuary in Igatpuri"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 referrerPolicy="no-referrer"
@@ -88,7 +90,7 @@ export default function AboutSection() {
             >
               <Link 
                 to="/about"
-                className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-resort-ink text-white rounded-full overflow-hidden transition-all duration-500 hover:pr-12"
+                className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-resort-green text-white rounded-full overflow-hidden transition-all duration-500 hover:pr-12"
               >
                 <span className="relative z-10 uppercase tracking-[0.2em] text-xs font-bold">
                   Discover More

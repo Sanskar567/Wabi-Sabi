@@ -180,10 +180,10 @@ export default function RoomsSection() {
 
                 <Link 
                   to="/rooms"
-                  className="flex items-center space-x-4 text-xs uppercase tracking-[0.2em] font-bold text-resort-ink group/btn"
+                  className="flex items-center space-x-4 text-xs uppercase tracking-[0.2em] font-bold text-resort-green group/btn"
                 >
                   <span>Explore Room</span>
-                  <div className="w-8 h-[1px] bg-resort-ink group-hover/btn:w-12 transition-all duration-500" />
+                  <div className="w-8 h-[1px] bg-resort-green group-hover/btn:w-12 transition-all duration-500" />
                   <ArrowRight className="w-3 h-3 group-hover/btn:translate-x-2 transition-transform duration-500" />
                 </Link>
               </div>

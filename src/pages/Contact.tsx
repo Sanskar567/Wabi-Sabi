@@ -7,6 +7,7 @@ import {
   ArrowRight, ExternalLink
 } from 'lucide-react';
 import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
+import contact_img from '@/assets/images/edit.png';
 import { cn } from '@/lib/utils';
 
 const contactCards = [
@@ -29,7 +30,7 @@ const contactCards = [
     title: "Visit Us",
     text: "Igatpuri, Maharashtra",
     subtext: "Get directions to sanctuary",
-    action: "https://maps.google.com"
+    action: "https://maps.app.goo.gl/ZWvnVex3B42gBzZR7"
   }
 ];
 
@@ -45,7 +46,7 @@ export default function Contact() {
           className="absolute inset-0 z-0"
         >
           <img 
-            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1920" 
+            src= {contact_img}
             alt="Scenic Mountain View"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
@@ -187,11 +188,14 @@ export default function Contact() {
                     </motion.div>
                     <motion.div variants={{ initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } }} className="space-y-2">
                       <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400 ml-1">Guests</label>
-                      <select className="w-full bg-resort-bg/30 border-b border-gray-100 py-4 px-4 rounded-xl focus:outline-none focus:border-resort-gold focus:bg-white focus:shadow-lg transition-all duration-300 text-gray-500 appearance-none">
-                        <option>1 Guest</option>
-                        <option selected>2 Guests</option>
-                        <option>3 Guests</option>
-                        <option>4+ Guests</option>
+                      <select 
+                        defaultValue="2 Guests"
+                        className="w-full bg-resort-bg/30 border-b border-gray-100 py-4 px-4 rounded-xl focus:outline-none focus:border-resort-gold focus:bg-white focus:shadow-lg transition-all duration-300 text-gray-500 appearance-none"
+                      >
+                        <option value="1 Guest">1 Guest</option>
+                        <option value="2 Guests">2 Guests</option>
+                        <option value="3 Guests">3 Guests</option>
+                        <option value="4+ Guests">4+ Guests</option>
                       </select>
                     </motion.div>
                   </div>
@@ -209,7 +213,7 @@ export default function Contact() {
                     variants={{ initial: { opacity: 0, y: 10 }, animate: { opacity: 1, y: 0 } }}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-resort-ink text-white py-5 rounded-xl uppercase tracking-[0.3em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl mt-4"
+                    className="w-full bg-resort-green text-white py-5 rounded-xl uppercase tracking-[0.3em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl mt-4"
                   >
                     Send Inquiry
                   </motion.button>
@@ -244,7 +248,7 @@ export default function Contact() {
                 Igatpuri, Maharashtra 422403
               </p>
               <a 
-                href="https://maps.google.com" 
+                href="https://maps.app.goo.gl/ZWvnVex3B42gBzZR7" 
                 target="_blank" 
                 rel="noreferrer"
                 className="inline-flex items-center text-[10px] uppercase tracking-widest font-bold text-resort-gold hover:text-resort-ink transition-colors"

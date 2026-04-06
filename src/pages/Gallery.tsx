@@ -7,76 +7,89 @@ import {
   GridItem, 
 } from "@/components/ui/infinite-drag-scroll";
 
+import kingImg from '@/assets/images/king2.png';
+import poolImg from '@/assets/images/pool-hero.png';
+import royalImg from '@/assets/images/royal1.png';
+import yamaImg from '@/assets/images/yama3.png';
+import tentsImg from '@/assets/images/tents1.png';
+import preImg from '@/assets/images/pre1.png';
+import deckImg from '@/assets/images/deck.jpeg';
+import gardenImg from '@/assets/images/garden.png';
+import supImg from '@/assets/images/sup3.png';
+import wabiImg from '@/assets/images/Wabi sabi.png';
+import editImg from '@/assets/images/edit3.png';
+import yamaVillaImg from '@/assets/images/yama-villa-hero.webp';
+
 const galleryImages = [
   { 
     id: 1, 
-    url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200", 
+    url: kingImg, 
     title: "Royal Suite", 
     category: "Accommodations"
   },
   { 
     id: 2, 
-    url: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&q=80&w=1200", 
+    url: poolImg, 
     title: "Infinity Pool", 
     category: "Wellness"
   },
   { 
     id: 3, 
-    url: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=1200", 
+    url: royalImg, 
     title: "Gourmet Dining", 
     category: "Cuisine"
   },
   { 
     id: 4, 
-    url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200", 
+    url: yamaImg, 
     title: "Zen Garden", 
     category: "Nature"
   },
   { 
     id: 5, 
-    url: "https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=1200", 
+    url: tentsImg, 
     title: "Mountain View", 
     category: "Landscape"
   },
   { 
     id: 6, 
-    url: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1200", 
+    url: preImg, 
     title: "Grand Ballroom", 
     category: "Events"
   },
   { 
     id: 7, 
-    url: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=1200", 
+    url: deckImg, 
     title: "Private Terrace", 
     category: "Luxury"
   },
   { 
     id: 8, 
-    url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=1200", 
+    url: gardenImg, 
     title: "Sunset Lounge", 
     category: "Relaxation"
   },
   { 
     id: 9, 
-    url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=1200", 
+    url: supImg, 
     title: "Main Entrance", 
     category: "Resort"
   },
   { 
     id: 10, 
-    url: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&q=80&w=1200", 
+    url: wabiImg, 
     title: "Spa Sanctuary", 
     category: "Wellness"
   },
   { 
     id: 11, 
-    url: "https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0b?auto=format&fit=crop&q=80&w=1200", 
+    url: editImg, 
     title: "Poolside Bar", 
     category: "Dining"
   },
   { 
     id: 12, 
-    url: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=1200", 
+    url: yamaVillaImg, 
     title: "Forest Trail", 
     category: "Nature"
   }

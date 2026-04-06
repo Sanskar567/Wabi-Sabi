@@ -183,7 +183,7 @@ export default function Home() {
               <FadeUp delay={0.4}>
                 <Link 
                   to="/about"
-                  className="inline-block bg-resort-ink text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl"
+                  className="inline-block bg-resort-green text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl"
                 >
                   Discover More
                 </Link>
@@ -194,6 +194,37 @@ export default function Home() {
       </section>
 
       <RoomsSection />
+
+      {/* Reviews Section */}
+      <section className="py-32 bg-resort-bg overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="space-y-8">
+              <FadeUp>
+                <p className="text-resort-gold uppercase tracking-[0.4em] text-[10px] font-bold mb-4">Guest Voices</p>
+                <h2 className="text-5xl md:text-7xl font-serif leading-[1.1]">Whispers of <br /> Satisfaction</h2>
+                <p className="text-gray-500 font-light text-lg leading-relaxed max-w-md">
+                  Discover why our guests find solace in the mountains. Real stories from real travelers who found their peace at Wabi Sabi.
+                </p>
+              </FadeUp>
+              
+              <div className="pt-8">
+                <div className="flex items-center space-x-1 mb-4">
+                  {[1,2,3,4,5].map(i => (
+                    <Sun key={i} className="w-5 h-5 text-resort-gold fill-resort-gold" />
+                  ))}
+                </div>
+                <p className="text-resort-ink font-serif text-2xl">4.9 / 5.0 Rating</p>
+                <p className="text-gray-400 text-sm tracking-widest uppercase mt-2">Based on 2,500+ reviews</p>
+              </div>
+            </div>
+
+            <div className="relative py-20">
+              <Testimonials />
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Nearby Attractions Section */}
       <section className="py-24 bg-white">
@@ -275,7 +306,7 @@ export default function Home() {
       </section>
 
       {/* Featured Videos Section */}
-      <section className="py-32 bg-resort-ink text-white overflow-hidden">
+      <section className="py-32 bg-resort-green text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-5 space-y-8">
@@ -348,36 +379,6 @@ export default function Home() {
       <EventsSection />
       <StatsSection />
       <ActivitiesSection />
-      {/* Reviews Section */}
-      <section className="py-32 bg-resort-bg overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-            <div className="space-y-8">
-              <FadeUp>
-                <p className="text-resort-gold uppercase tracking-[0.4em] text-[10px] font-bold mb-4">Guest Voices</p>
-                <h2 className="text-5xl md:text-7xl font-serif leading-[1.1]">Whispers of <br /> Satisfaction</h2>
-                <p className="text-gray-500 font-light text-lg leading-relaxed max-w-md">
-                  Discover why our guests find solace in the mountains. Real stories from real travelers who found their peace at Wabi Sabi.
-                </p>
-              </FadeUp>
-              
-              <div className="pt-8">
-                <div className="flex items-center space-x-1 mb-4">
-                  {[1,2,3,4,5].map(i => (
-                    <Sun key={i} className="w-5 h-5 text-resort-gold fill-resort-gold" />
-                  ))}
-                </div>
-                <p className="text-resort-ink font-serif text-2xl">4.9 / 5.0 Rating</p>
-                <p className="text-gray-400 text-sm tracking-widest uppercase mt-2">Based on 2,500+ reviews</p>
-              </div>
-            </div>
-
-            <div className="relative py-20">
-              <Testimonials />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Video Modal */}
       <AnimatePresence>
@@ -529,7 +530,7 @@ export default function Home() {
                   <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Message</label>
                   <textarea rows={4} className="w-full border-b border-gray-100 py-3 focus:outline-none focus:border-resort-gold transition-colors resize-none" />
                 </div>
-                <button className="w-full bg-resort-ink text-white py-5 rounded-lg uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl">
+                <button className="w-full bg-resort-green text-white py-5 rounded-lg uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl">
                   Send Message
                 </button>
               </form>

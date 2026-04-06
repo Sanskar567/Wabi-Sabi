@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Logo from './Logo';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -43,14 +42,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="relative z-50 flex items-center space-x-3 md:space-x-4 group">
-          <Logo 
-            variant={isDark ? 'dark' : 'light'}
-            className="w-8 h-8 md:w-12 md:h-12 transition-all duration-300 group-hover:scale-110" 
-          />
           <div className="flex flex-col">
             <span className={cn(
               "text-base md:text-xl font-serif tracking-[0.2em] md:tracking-[0.3em] uppercase transition-colors duration-300",
-              isDark ? "text-resort-ink" : "text-white"
+              isDark ? "text-resort-green" : "text-white"
             )}>
               Wabi Sabi
             </span>
@@ -71,7 +66,7 @@ export default function Navbar() {
               to={link.path}
               className={cn(
                 "relative text-[11px] uppercase tracking-[0.3em] font-bold transition-colors duration-300 group",
-                isDark ? "text-resort-ink" : "text-white/80 hover:text-white"
+                isDark ? "text-resort-green" : "text-white/80 hover:text-white"
               )}
             >
               {link.name}
@@ -98,7 +93,7 @@ export default function Navbar() {
             to="/booking" 
             className={cn(
               "flex items-center text-[10px] tracking-[0.2em] uppercase font-bold transition-all duration-300 border-b pb-1",
-              isDark ? "text-resort-ink border-resort-ink/20 hover:border-resort-gold" : "text-white border-white/20 hover:border-white"
+              isDark ? "text-resort-green border-resort-green/20 hover:border-resort-gold" : "text-white border-white/20 hover:border-white"
             )}
           >
             <Phone className="w-3 h-3 mr-2" />
@@ -117,21 +112,21 @@ export default function Navbar() {
               animate={isMobileMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
               className={cn(
                 "block w-6 h-[1.5px] transition-colors duration-300",
-                isDark ? "bg-resort-ink" : "bg-white"
+                isDark ? "bg-resort-green" : "bg-white"
               )} 
             />
             <motion.span 
               animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               className={cn(
                 "block w-6 h-[1.5px] transition-colors duration-300",
-                isDark ? "bg-resort-ink" : "bg-white"
+                isDark ? "bg-resort-green" : "bg-white"
               )} 
             />
             <motion.span 
               animate={isMobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
               className={cn(
                 "block w-6 h-[1.5px] transition-colors duration-300",
-                isDark ? "bg-resort-ink" : "bg-white"
+                isDark ? "bg-resort-green" : "bg-white"
               )} 
             />
           </div>
@@ -158,7 +153,7 @@ export default function Navbar() {
                 >
                   <Link
                     to={link.path}
-                    className="text-3xl font-serif uppercase tracking-[0.2em] text-resort-ink hover:text-resort-gold transition-colors"
+                    className="text-3xl font-serif uppercase tracking-[0.2em] text-resort-green hover:text-resort-gold transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -173,7 +168,7 @@ export default function Navbar() {
             >
               <Link 
                 to="/booking"
-                className="px-12 py-4 bg-resort-ink text-white uppercase tracking-[0.3em] text-xs font-bold rounded-full shadow-2xl inline-block"
+                className="px-12 py-4 bg-resort-green text-white uppercase tracking-[0.3em] text-xs font-bold rounded-full shadow-2xl inline-block"
               >
                 Book Your Stay
               </Link>

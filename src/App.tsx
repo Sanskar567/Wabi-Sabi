@@ -11,6 +11,7 @@ import Booking from './pages/Booking';
 import ThankYou from './pages/ThankYou';
 import AboutSection from './components/AboutSection';
 import { BookingProvider } from './context/BookingContext';
+import about_hero_img from '@/assets/images/Wabi sabi.png';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -36,36 +37,13 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
 // Content-rich About page
 const About = () => (
   <PageWrapper>
-    <div className="pt-48 bg-resort-ink text-white pb-32 text-center relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
+    <div className="relative overflow-hidden h-[60vh]">
+      <div className="absolute inset-0">
         <img 
-          src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&q=80&w=1920" 
+          src={about_hero_img}
           alt="Background" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
-        />
-      </div>
-      <div className="relative z-10 max-w-4xl mx-auto px-6">
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-resort-gold uppercase tracking-[0.5em] text-xs font-bold mb-8"
-        >
-          The Wabi Sabi Story
-        </motion.p>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-5xl md:text-8xl font-serif mb-12 leading-[1.1]"
-        >
-          Finding beauty in <br /> the natural cycle
-        </motion.h1>
-        <motion.div 
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className="w-32 h-1 bg-resort-gold mx-auto" 
         />
       </div>
     </div>

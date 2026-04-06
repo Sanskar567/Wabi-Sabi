@@ -11,7 +11,6 @@ import { FadeUp, StaggerContainer } from '@/components/ui/MotionWrappers';
 import { cn } from '@/lib/utils';
 import { useBooking } from '../context/BookingContext';
 import { bookingService } from '@/services/bookingService';
-import HouseRules from '@/components/HouseRules';
 import kingImg from '@/assets/images/king2.png';
 import royalImg from '@/assets/images/royal1.png';
 import preImg from '@/assets/images/pre1.png';
@@ -339,7 +338,7 @@ export default function Rooms() {
                         e.stopPropagation();
                         handleBookNow(room.title);
                       }}
-                      className="text-xs uppercase tracking-widest font-bold text-resort-gold hover:text-resort-ink transition-colors flex items-center space-x-2"
+                      className="text-xs uppercase tracking-widest font-bold text-resort-green hover:text-resort-gold transition-colors flex items-center space-x-2"
                     >
                       <span>Book Now</span>
                       <ArrowRight className="w-3 h-3" />
@@ -526,11 +525,6 @@ export default function Rooms() {
                       ))}
                     </div>
                   </div>
-
-                  <div className="pt-10 border-t border-gray-100">
-                    <h4 className="text-xs uppercase tracking-widest font-bold text-resort-ink mb-8">House Rules</h4>
-                    <HouseRules />
-                  </div>
                 </div>
 
                 <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between space-y-6 sm:space-y-0">
@@ -540,7 +534,7 @@ export default function Rooms() {
                   </div>
                   <button 
                     onClick={() => handleBookNow(selectedRoom.title)}
-                    className="w-full sm:w-auto bg-resort-ink text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl"
+                    className="w-full sm:w-auto bg-resort-green text-white px-10 py-4 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-resort-gold transition-all duration-500 shadow-xl"
                   >
                     Book This Room
                   </button>

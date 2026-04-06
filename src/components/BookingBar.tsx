@@ -168,7 +168,7 @@ export default function BookingBar({ startAnimation }: BookingBarProps) {
               </div>
               <button 
                 onClick={() => setShowGuestPicker(false)}
-                className="w-full mt-6 py-2 bg-resort-ink text-white rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-resort-gold transition-colors"
+                className="w-full mt-6 py-2 bg-resort-green text-white rounded-lg text-xs uppercase tracking-widest font-bold hover:bg-resort-gold transition-colors"
               >
                 Apply
               </button>
@@ -179,7 +179,7 @@ export default function BookingBar({ startAnimation }: BookingBarProps) {
         {/* Search Button */}
         <button 
           onClick={handleCheckAvailability}
-          className="bg-resort-ink text-white px-8 py-5 rounded-lg flex items-center justify-center space-x-3 hover:bg-resort-gold transition-all duration-500 group"
+          className="bg-resort-green text-white px-8 py-5 rounded-lg flex items-center justify-center space-x-3 hover:bg-resort-gold transition-all duration-500 group"
         >
           <span className="uppercase tracking-[0.2em] text-xs font-semibold whitespace-nowrap">Check Availability</span>
           <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
